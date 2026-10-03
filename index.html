@@ -612,7 +612,8 @@
     body.mode-story .story-section[data-step="01"] .section-label.reveal:not(.is-in),
     body.mode-story .story-section[data-step="03"] .section-label.reveal:not(.is-in),
     body.mode-story .story-section[data-step="05"] .section-label.reveal:not(.is-in),
-    body.mode-story .story-section[data-step="07"] .section-label.reveal:not(.is-in) {
+    body.mode-story .story-section[data-step="07"] .section-label.reveal:not(.is-in),
+    body.mode-story .story-section[data-step="09"] .section-label.reveal:not(.is-in) {
       transform: translate3d(-22px, 4px, -48px) rotateY(9deg);
     }
     body.mode-story .story-section[data-step="02"] .section-label.reveal:not(.is-in),
@@ -1107,6 +1108,8 @@
           <li><a href="#military" data-i18n="nav.military">Military</a></li>
           <li><a href="#awards" data-i18n="nav.awards">Awards</a></li>
           <li><a href="#education" data-i18n="nav.education">Education</a></li>
+          <li><a href="#credentials" data-i18n="nav.credentials">Credentials</a></li>
+          <li><a href="#volunteering" data-i18n="nav.volunteering">Volunteering</a></li>
           <li><a href="#contact" data-i18n="nav.contact">Contact</a></li>
         </ul>
         <div class="lang-switch" role="group" aria-label="Language">
@@ -1342,20 +1345,26 @@
     </section>
 
 
-    <section id="credentials" class="story-section story-tall" data-step="07" aria-labelledby="creds-heading">
-      <h2 class="section-label reveal from-left" id="creds-heading"><span class="step-num" aria-hidden="true">07</span><span data-i18n="creds.label">Credentials &amp; Community</span></h2>
+    <section id="credentials" class="story-section" data-step="07" aria-labelledby="creds-heading">
+      <h2 class="section-label reveal from-left" id="creds-heading"><span class="step-num" aria-hidden="true">07</span><span data-i18n="creds.label">Credentials</span></h2>
       <div class="creds stagger">
         <div class="cred-item reveal from-right" style="--i:0" data-i18n="cred.1">U.S. Department of Defense Security Clearance</div>
         <div class="cred-item reveal from-left" style="--i:1" data-i18n="cred.2">Navy MEDIC Emergency First Aid (issued Jun 2013)</div>
         <div class="cred-item reveal from-right" style="--i:2" data-i18n="cred.3">SRF B/A Certification (issued Jun 2013 · expires Jan 2036)</div>
-        <div class="cred-item reveal from-left" style="--i:3" data-i18n="cred.4">Tokyo 2020 Olympic Support</div>
-        <div class="cred-item reveal from-right" style="--i:4" data-i18n="cred.5">Osaka Expo 2025 Volunteer</div>
-        <div class="cred-item reveal from-left" style="--i:5" data-i18n="cred.6">Kumamoto Earthquake Relief</div>
       </div>
     </section>
 
-    <section id="contact" class="story-section" data-step="08" aria-labelledby="contact-heading">
-      <h2 class="section-label reveal from-right" id="contact-heading"><span class="step-num" aria-hidden="true">08</span><span data-i18n="contact.label">Contact</span></h2>
+    <section id="volunteering" class="story-section" data-step="08" aria-labelledby="vol-heading">
+      <h2 class="section-label reveal from-right" id="vol-heading"><span class="step-num" aria-hidden="true">08</span><span data-i18n="vol.label">Volunteering</span></h2>
+      <div class="creds stagger">
+        <div class="cred-item reveal from-left" style="--i:0" data-i18n="cred.4">Tokyo 2020 Olympic Support</div>
+        <div class="cred-item reveal from-right" style="--i:1" data-i18n="cred.5">Osaka Expo 2025 Volunteer</div>
+        <div class="cred-item reveal from-left" style="--i:2" data-i18n="cred.6">Kumamoto Earthquake Relief</div>
+      </div>
+    </section>
+
+    <section id="contact" class="story-section" data-step="09" aria-labelledby="contact-heading">
+      <h2 class="section-label reveal from-left" id="contact-heading"><span class="step-num" aria-hidden="true">09</span><span data-i18n="contact.label">Contact</span></h2>
       <div class="cta reveal from-right">
         <h2 data-i18n="contact.title">Let’s coordinate the next move.</h2>
         <p data-i18n="contact.body">
@@ -1465,6 +1474,8 @@
     "nav.military": "Military",
     "nav.awards": "Awards",
     "nav.education": "Education",
+    "nav.credentials": "Credentials",
+    "nav.volunteering": "Volunteering",
     "nav.contact": "Contact",
     "hero.badge": "Personal site · ready for updates",
     "hero.name": "Nathan Newberry",
@@ -1560,7 +1571,8 @@
     "ai.item1": "Generative AI for Business/Productivity workflows",
     "ai.item2": "Prompt engineering for analysis & reporting",
     "ai.item3": "Applied Python for data & automation",
-    "creds.label": "Credentials & Community",
+    "creds.label": "Credentials",
+    "vol.label": "Volunteering",
     "cred.1": "U.S. Department of Defense Security Clearance",
     "cred.2": "Navy MEDIC Emergency First Aid (issued Jun 2013)",
     "cred.3": "SRF B/A Certification (issued Jun 2013 · expires Jan 2036)",
@@ -1590,6 +1602,8 @@
     "nav.military": "軍歴",
     "nav.awards": "受賞",
     "nav.education": "学歴",
+    "nav.credentials": "資格",
+    "nav.volunteering": "ボランティア",
     "nav.contact": "連絡先",
     "hero.badge": "個人サイト · 更新対応可",
     "hero.name": "Nathan Newberry",
@@ -1685,7 +1699,8 @@
     "ai.item1": "ビジネス／生産性ワークフロー向け生成AI",
     "ai.item2": "分析・レポーティングのためのプロンプトエンジニアリング",
     "ai.item3": "データ＆自動化のための応用Python",
-    "creds.label": "資格・コミュニティ",
+    "creds.label": "資格",
+    "vol.label": "ボランティア",
     "cred.1": "米国防総省セキュリティクリアランス",
     "cred.2": "海軍 MEDIC 救急応急処置（2013年6月発行）",
     "cred.3": "SRF B/A 認定（2013年6月発行 · 2036年1月満了）",
@@ -1715,6 +1730,8 @@
     "nav.military": "군 경력",
     "nav.awards": "수상",
     "nav.education": "학력",
+    "nav.credentials": "자격",
+    "nav.volunteering": "자원봉사",
     "nav.contact": "연락처",
     "hero.badge": "개인 사이트 · 업데이트 가능",
     "hero.name": "Nathan Newberry",
@@ -1810,7 +1827,8 @@
     "ai.item1": "비즈니스/생산성 워크플로를 위한 생성형 AI",
     "ai.item2": "분석 및 보고를 위한 프롬프트 엔지니어링",
     "ai.item3": "데이터 및 자동화를 위한 응용 Python",
-    "creds.label": "자격 및 커뮤니티",
+    "creds.label": "자격",
+    "vol.label": "자원봉사",
     "cred.1": "미 국방부 보안 허가",
     "cred.2": "해군 MEDIC 응급처치(2013년 6월 발급)",
     "cred.3": "SRF B/A 인증(2013년 6월 발급 · 2036년 1월 만료)",
@@ -1840,6 +1858,8 @@
     "nav.military": "Militar",
     "nav.awards": "Premios",
     "nav.education": "Educación",
+    "nav.credentials": "Credenciales",
+    "nav.volunteering": "Voluntariado",
     "nav.contact": "Contacto",
     "hero.badge": "Sitio personal · listo para actualizaciones",
     "hero.name": "Nathan Newberry",
@@ -1935,7 +1955,8 @@
     "ai.item1": "IA generativa para negocios/flujos de productividad",
     "ai.item2": "Ingeniería de prompts para análisis e informes",
     "ai.item3": "Python aplicado a datos y automatización",
-    "creds.label": "Credenciales y comunidad",
+    "creds.label": "Credenciales",
+    "vol.label": "Voluntariado",
     "cred.1": "Autorización de seguridad del Departamento de Defensa de EE. UU.",
     "cred.2": "Primeros auxilios de emergencia Navy MEDIC (emitido jun 2013)",
     "cred.3": "Certificación SRF B/A (emitida jun 2013 · vence ene 2036)",
@@ -1974,6 +1995,8 @@
         "nav.military": 1,
         "nav.awards": 1,
         "nav.education": 1,
+        "nav.credentials": 1,
+        "nav.volunteering": 1,
         "nav.contact": 1,
         "mode.story": 1,
         "mode.full": 1,
