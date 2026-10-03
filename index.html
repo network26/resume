@@ -1089,7 +1089,7 @@
     }
   </style>
 </head>
-<body class="mode-story" id="top">
+<body class="mode-full" id="top">
   <div class="hud-scan" aria-hidden="true"></div>
   <div class="nav-wrap" id="nav">
     <nav class="nav" aria-label="Primary">
@@ -1103,10 +1103,6 @@
           <li><a href="#education" data-i18n="nav.education">Education</a></li>
           <li><a href="#contact" data-i18n="nav.contact">Contact</a></li>
         </ul>
-        <div class="mode-switch" role="group" aria-label="View mode">
-          <button type="button" class="mode-btn active" data-mode="story" aria-pressed="true" data-i18n="mode.story">Story</button>
-          <button type="button" class="mode-btn" data-mode="full" aria-pressed="false" data-i18n="mode.full">Full</button>
-        </div>
         <div class="edit-controls" role="group" aria-label="Edit content">
           <button type="button" class="mode-btn edit-toggle" id="edit-toggle" data-i18n="edit.toggle" aria-pressed="false">Edit</button>
           <button type="button" class="mode-btn edit-reset" id="edit-reset" data-i18n="edit.reset" hidden>Reset</button>
@@ -2107,10 +2103,9 @@
         });
       });
 
-      var initialMode = "story";
+      var initialMode = "full";
       try {
-        var savedMode = localStorage.getItem("resume-mode");
-        if (savedMode === "full" || savedMode === "story") initialMode = savedMode;
+        initialMode = "full";
       } catch (e) {}
       setMode(initialMode);
 
