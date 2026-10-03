@@ -48,7 +48,6 @@
     html {
       scroll-behavior: smooth;
       scroll-padding-top: calc(var(--nav-h) + 0.75rem);
-      overflow-x: clip;
     }
 
     body {
@@ -57,7 +56,6 @@
       color: var(--ink);
       line-height: 1.65;
       font-size: 1.02rem;
-      overflow-x: clip;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
       min-height: 100vh;
@@ -474,11 +472,10 @@
 
     .story-section { padding: 3.5rem 0 0; }
     body.mode-story .story-section {
-      padding: 4.25rem 0 1rem;
-      min-height: min(70vh, 620px);
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
+      padding: 3.25rem 0 1.25rem;
+      min-height: 0;
+      display: block;
+      overflow: visible;
     }
     body.mode-story .story-section.story-tall {
       min-height: auto;
@@ -1130,7 +1127,6 @@
       <div class="landing-glow" aria-hidden="true"></div>
       <div class="depth-layer depth-a" aria-hidden="true"></div>
       <div class="depth-layer depth-b" aria-hidden="true"></div>
-      <p class="demo-badge reveal is-in from-left" data-i18n="hero.badge">Personal site · ready for updates</p>
       <h1 class="reveal is-in from-scale" data-i18n="hero.name" style="--d:90ms">Nathan Newberry</h1>
       <p class="role-line reveal is-in from-left" data-i18n="hero.role" style="--d:160ms">Operations &amp; Program Coordination · Project Management · Process Optimization · MBA | Veteran</p>
       <p class="pitch reveal is-in from-up" data-i18n="hero.pitch" style="--d:230ms">
@@ -1140,7 +1136,7 @@
         problems, and building cross-cultural relationships with measurable impact.
       </p>
       <div class="hero-meta reveal is-in from-up" style="--d:300ms">
-        <span data-i18n="hero.location">Oita / Beppu, Japan · open to Tokyo / relocation</span>
+        <span data-i18n="hero.location">Based in Oita / Beppu, Japan · open to relocation, anywhere in Japan and globally</span>
         <a href="mailto:nathne16@gmail.com" data-i18n="hero.email">nathne16@gmail.com</a>
         <a href="https://linkedin.com/in/nathne/" target="_blank" rel="noopener noreferrer" data-i18n="hero.linkedin">LinkedIn</a>
       </div>
@@ -1361,7 +1357,8 @@
         <h2 data-i18n="contact.title">Let’s coordinate the next move.</h2>
         <p data-i18n="contact.body">
           Open to operations, program coordination, and project management roles
-          in Japan (Tokyo or relocation). Earliest full-time start ~Mar 2027 after MBA.
+          anywhere in Japan and globally. Work authorization for Japan and the United States.
+          Based in Oita / Beppu, and open to relocation. Earliest full-time start ~Mar 2027 after MBA.
         </p>
         <div class="cta-actions">
           <a class="btn btn-primary" href="mailto:nathne16@gmail.com" data-i18n="contact.email">nathne16@gmail.com</a>
@@ -1374,6 +1371,7 @@
 
   <footer>
     <span data-i18n="footer.text">Nathan Newberry · Oita / Beppu, Japan · Operations &amp; Program Coordination</span>
+    <a href="https://github.com/network26/resume/edit/main/index.html">Edit this page</a>
   </footer>
 
   <script>
@@ -1471,7 +1469,7 @@
     "hero.name": "Nathan Newberry",
     "hero.role": "Operations & Program Coordination · Project Management · Process Optimization · MBA | Veteran",
     "hero.pitch": "Operations and program coordination professional with U.S. government and multinational experience. MBA candidate in Japan (Marketing and Management) and U.S. Navy veteran — skilled at streamlining operations, solving complex problems, and building cross-cultural relationships with measurable impact.",
-    "hero.location": "Oita / Beppu, Japan · open to Tokyo / relocation",
+    "hero.location": "Based in Oita / Beppu, Japan · open to relocation, anywhere in Japan and globally",
     "hero.linkedin": "LinkedIn",
     "about.label": "About",
     "about.p1": "Results-driven professional with international experience in <strong>program management</strong>, business analysis, and consulting. I bring structured program coordination and process optimization from civil service and consulting into complex, multi-stakeholder environments. I care about <strong>measurable outcomes</strong>: clearing backlogs, cutting cycle time, and making cross-functional work actually stick.",
@@ -1563,7 +1561,7 @@
     "cred.6": "Kumamoto Earthquake Relief",
     "contact.label": "Contact",
     "contact.title": "Let’s coordinate the next move.",
-    "contact.body": "Open to operations, program coordination, and project management roles in Japan (Tokyo or relocation). Earliest full-time start ~Mar 2027 after MBA.",
+    "contact.body": "Open to operations, program coordination, and project management roles anywhere in Japan and globally. Work authorization for Japan and the United States. Based in Oita / Beppu, and open to relocation. Earliest full-time start ~Mar 2027 after MBA.",
     "contact.email": "Email",
     "contact.linkedin": "LinkedIn",
     "footer.text": "Nathan Newberry · Oita / Beppu, Japan · Operations & Program Coordination",
@@ -1588,7 +1586,7 @@
     "hero.name": "Nathan Newberry",
     "hero.role": "オペレーション＆プログラム調整 · プロジェクト管理 · プロセス最適化 · MBA | 退役軍人",
     "hero.pitch": "米国政府および多国籍環境での経験を持つオペレーション・プログラム調整の専門家。日本でMBA（マーケティング＆マネジメント）候補、米海軍退役軍人。業務効率化、複雑な課題解決、測定可能な成果を伴う異文化関係構築を得意とします。",
-    "hero.location": "大分／別府 · 東京・転勤歓迎",
+    "hero.location": "現在地は大分・別府 · 日本全国および海外への転勤可",
     "hero.linkedin": "LinkedIn",
     "about.label": "概要",
     "about.p1": "国際的な<strong>プログラム管理</strong>、ビジネス分析、コンサルティングの経験を持つ成果志向のプロフェッショナルです。公務員およびコンサルティングで培った構造的なプログラム調整とプロセス最適化を、複雑なステークホルダー環境に活かします。<strong>測定可能な成果</strong>を重視し、バックログ解消、サイクルタイム短縮、部門横断の実務定着に取り組みます。",
@@ -1680,7 +1678,7 @@
     "cred.6": "熊本地震救援活動",
     "contact.label": "連絡先",
     "contact.title": "次の一手を一緒に調整しましょう。",
-    "contact.body": "日本（東京または転勤可）でのオペレーション、プログラム調整、プロジェクト管理職にオープン。MBA修了後のフルタイム開始は最短2027年3月頃。",
+    "contact.body": "日本全国および海外でのオペレーション、プログラム調整、プロジェクト管理職にオープン。就労資格は日本と米国。現在は大分・別府で、転勤可。MBA修了後のフルタイム開始は最短2027年3月頃。",
     "contact.email": "メール",
     "contact.linkedin": "LinkedIn",
     "footer.text": "Nathan Newberry · 大分／別府 · オペレーション＆プログラム調整",
@@ -1705,7 +1703,7 @@
     "hero.name": "Nathan Newberry",
     "hero.role": "운영 및 프로그램 조율 · 프로젝트 관리 · 프로세스 최적화 · MBA | 예비역",
     "hero.pitch": "미국 정부 및 다국적 경험을 갖춘 운영·프로그램 조율 전문가. 일본 MBA(마케팅·경영) 후보이자 미 해군 예비역으로, 운영 간소화, 복잡한 문제 해결, 측정 가능한 성과를 내는 교차문화 관계 구축에 능숙합니다.",
-    "hero.location": "오이타 / 벳푸, 일본 · 도쿄 / 이전 가능",
+    "hero.location": "현재 오이타 / 벳푸 · 일본 전역 및 해외 이전 가능",
     "hero.linkedin": "LinkedIn",
     "about.label": "소개",
     "about.p1": "국제적인 <strong>프로그램 관리</strong>, 비즈니스 분석, 컨설팅 경험을 갖춘 성과 지향 전문가입니다. 공무와 컨설팅에서 쌓은 구조적 프로그램 조율과 프로세스 최적화를 복잡한 이해관계자 환경에 적용합니다. 백로그 해소, 사이클 타임 단축, 교차기능 업무의 실질적 정착 등 <strong>측정 가능한 성과</strong>를 중시합니다.",
@@ -1797,7 +1795,7 @@
     "cred.6": "구마모토 지진 구호",
     "contact.label": "연락처",
     "contact.title": "다음 단계를 함께 조율합시다.",
-    "contact.body": "일본(도쿄 또는 이전)의 운영, 프로그램 조율, 프로젝트 관리 역할에 열려 있습니다. MBA 후 풀타임 시작은 빠를 경우 2027년 3월경.",
+    "contact.body": "일본 전역과 해외의 운영, 프로그램 조율, 프로젝트 관리 역할에 열려 있습니다. 취업 자격은 일본과 미국입니다. 현재 오이타 / 벳푸이며 이전 가능합니다. MBA 후 풀타임 시작은 빠를 경우 2027년 3월경.",
     "contact.email": "이메일",
     "contact.linkedin": "LinkedIn",
     "footer.text": "Nathan Newberry · 오이타 / 벳푸, 일본 · 운영 및 프로그램 조율",
@@ -1822,7 +1820,7 @@
     "hero.name": "Nathan Newberry",
     "hero.role": "Operaciones y coordinación de programas · Gestión de proyectos · Optimización de procesos · MBA | Veterano",
     "hero.pitch": "Profesional de operaciones y coordinación de programas con experiencia en el gobierno de EE. UU. y entornos multinacionales. Candidato a MBA en Japón (Marketing y Gestión) y veterano de la Marina de EE. UU. — experto en agilizar operaciones, resolver problemas complejos y construir relaciones interculturales con impacto medible.",
-    "hero.location": "Oita / Beppu, Japón · abierto a Tokio / reubicación",
+    "hero.location": "Con base en Oita / Beppu, Japón · abierto a reubicación en todo Japón y a nivel global",
     "hero.linkedin": "LinkedIn",
     "about.label": "Acerca de",
     "about.p1": "Profesional orientado a resultados con experiencia internacional en <strong>gestión de programas</strong>, análisis de negocio y consultoría. Aporto coordinación estructurada de programas y optimización de procesos desde el servicio civil y la consultoría a entornos complejos con múltiples partes interesadas. Me importan los <strong>resultados medibles</strong>: reducir atrasos, acortar el ciclo y hacer que el trabajo interfuncional se consolide.",
@@ -1914,7 +1912,7 @@
     "cred.6": "Ayuda tras el terremoto de Kumamoto",
     "contact.label": "Contacto",
     "contact.title": "Coordinemos el próximo paso.",
-    "contact.body": "Abierto a roles de operaciones, coordinación de programas y gestión de proyectos en Japón (Tokio o reubicación). Inicio a tiempo completo más temprano ~mar 2027 tras el MBA.",
+    "contact.body": "Abierto a roles de operaciones, coordinación de programas y gestión de proyectos en todo Japón y a nivel global. Autorización laboral en Japón y Estados Unidos. Con base en Oita / Beppu y abierto a reubicación. Inicio a tiempo completo más temprano ~mar 2027 tras el MBA.",
     "contact.email": "Correo",
     "contact.linkedin": "LinkedIn",
     "footer.text": "Nathan Newberry · Oita / Beppu, Japón · Operaciones y coordinación de programas",
