@@ -1,0 +1,2281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="robots" content="noindex, nofollow" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Nathan Newberry — Operations &amp; Program Coordination</title>
+  <meta name="description" content="Nathan Newberry — Operations &amp; Program Coordination, Project Management, Process Optimization. Based in Oita / Beppu, Japan." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,500;8..60,600;8..60,700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #10161c;
+      --bg-elevated: #18222b;
+      --bg-panel: #1a242e;
+      --ink: #f3efe6;
+      --ink-muted: #c8c2b6;
+      --ink-faint: #8f98a3;
+      --accent: #7d9eb4;
+      --accent-deep: #3f6278;
+      --accent-soft: rgba(125, 158, 180, 0.14);
+      --accent-glow: rgba(125, 158, 180, 0.22);
+      --accent-2: #c4a574;
+      --magenta-soft: rgba(196, 165, 116, 0.12);
+      --border: rgba(243, 239, 230, 0.1);
+      --border-strong: rgba(125, 158, 180, 0.42);
+      --grid: rgba(243, 239, 230, 0.025);
+      --shadow: 0 1px 0 rgba(255, 255, 255, 0.04) inset, 0 12px 32px rgba(0, 0, 0, 0.28);
+      --shadow-hover: 0 1px 0 rgba(255, 255, 255, 0.06) inset, 0 18px 40px rgba(0, 0, 0, 0.36);
+      --radius: 12px;
+      --max: 740px;
+      --nav-h: 3.5rem;
+      --font-sans: "Inter", "Hiragino Sans", "Noto Sans JP", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", system-ui, sans-serif;
+      --font-mono: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+      --font-display: "Source Serif 4", "Iowan Old Style", Georgia, serif;
+      --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+      --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+      --ease-spring: cubic-bezier(0.22, 1, 0.36, 1);
+      --dur-reveal: 0.7s;
+      --dur-fast: 0.28s;
+      --px: 0;
+      --py: 0;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: calc(var(--nav-h) + 0.75rem);
+      overflow-x: clip;
+    }
+
+    body {
+      font-family: var(--font-sans);
+      background: var(--bg);
+      color: var(--ink);
+      line-height: 1.65;
+      font-size: 1.02rem;
+      overflow-x: clip;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      min-height: 100vh;
+      position: relative;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: -2;
+      pointer-events: none;
+      background:
+        radial-gradient(ellipse 80% 50% at 50% -10%, rgba(125, 158, 180, 0.08), transparent 55%),
+        linear-gradient(180deg, #141c25 0%, var(--bg) 28%, #0d1318 100%);
+    }
+
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      pointer-events: none;
+      background: radial-gradient(ellipse 70% 40% at 80% 100%, rgba(196, 165, 116, 0.04), transparent 60%);
+      opacity: 1;
+    }
+
+    .hud-scan { display: none; }
+
+    a {
+      color: var(--accent);
+      text-decoration: none;
+      text-underline-offset: 0.18em;
+      transition: color 0.2s ease;
+    }
+    a:hover { color: #d7e4ee; }
+
+    .nav-wrap {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(18px) saturate(1.15);
+      -webkit-backdrop-filter: blur(18px) saturate(1.15);
+      background: rgba(16, 22, 28, 0.88);
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.25s ease, box-shadow 0.25s ease;
+      min-height: var(--nav-h);
+    }
+    .nav-wrap.scrolled {
+      border-bottom-color: var(--border);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.22);
+    }
+
+    .nav {
+      max-width: calc(var(--max) + 6rem);
+      margin: 0 auto;
+      padding: 0.65rem 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem 0.85rem;
+      flex-wrap: wrap;
+    }
+
+    .nav-mark {
+      font-family: var(--font-display);
+      font-weight: 600;
+      font-size: 0.95rem;
+      color: var(--ink);
+      text-decoration: none;
+      letter-spacing: -0.01em;
+      white-space: nowrap;
+    }
+    .nav-mark::before { content: none; }
+    .nav-mark:hover { color: #fff; }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem 1rem;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 0.15rem 0.9rem;
+      list-style: none;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+    .nav-links a {
+      font-family: var(--font-sans);
+      font-size: 0.72rem;
+      font-weight: 500;
+      color: var(--ink-faint);
+      text-decoration: none;
+      letter-spacing: 0.04em;
+      text-transform: none;
+      position: relative;
+    }
+    .nav-links a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -4px;
+      width: 0;
+      height: 1px;
+      background: var(--accent);
+      transition: width 0.22s ease;
+    }
+    .nav-links a:hover { color: var(--ink); }
+    .nav-links a:hover::after { width: 100%; }
+
+    .mode-switch,
+    .lang-switch {
+      display: inline-flex;
+      align-items: center;
+      gap: 0;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      overflow: hidden;
+      background: rgba(10, 14, 18, 0.45);
+    }
+    .mode-btn,
+    .lang-btn {
+      font-family: var(--font-sans);
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: none;
+      color: var(--ink-faint);
+      background: transparent;
+      border: none;
+      border-right: 1px solid var(--border);
+      padding: 0.34rem 0.62rem;
+      cursor: pointer;
+      transition: color 0.15s ease, background 0.15s ease;
+      white-space: nowrap;
+    }
+    .mode-btn:last-child,
+    .lang-btn:last-child { border-right: none; }
+    .mode-btn:hover,
+    .lang-btn:hover {
+      color: var(--ink);
+      background: rgba(255, 255, 255, 0.04);
+    }
+    .mode-btn.active,
+    .lang-btn.active {
+      color: #f7f4ee;
+      background: var(--accent-deep);
+    }
+    .edit-toggle,
+    .edit-reset {
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: rgba(10, 14, 18, 0.45);
+    }
+    .edit-reset[hidden] { display: none; }
+    .mode-btn:focus-visible,
+    .lang-btn:focus-visible,
+    .edit-toggle:focus-visible,
+    .edit-reset:focus-visible,
+    .btn:focus-visible,
+    a:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    body.is-editing .is-editable {
+      outline: 1px dashed rgba(125, 158, 180, 0.78);
+      outline-offset: 3px;
+      border-radius: 4px;
+      cursor: text;
+    }
+    body.is-editing .is-editable:focus {
+      outline: 2px solid var(--accent);
+      outline-offset: 3px;
+      background: rgba(125, 158, 180, 0.08);
+    }
+    body:not(.is-editing) .is-editable {
+      outline: none;
+    }
+
+    .shell {
+      max-width: calc(var(--max) + 6rem);
+      margin: 0 auto;
+      padding: 0 1.5rem 4rem;
+      position: relative;
+      perspective: 1500px;
+      perspective-origin: 50% 12%;
+      transform-style: preserve-3d;
+    }
+
+    .landing {
+      min-height: calc(100vh - var(--nav-h));
+      min-height: calc(100dvh - var(--nav-h));
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 2.75rem 0 3rem;
+      max-width: var(--max);
+      position: relative;
+      --parallax-x: 0px;
+      --parallax-y: 0px;
+      transform-style: preserve-3d;
+    }
+    .landing::before,
+    .landing::after { content: none; }
+
+    .hero-tilt {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      position: relative;
+      width: 100%;
+      transform-style: preserve-3d;
+      transition: transform 0.55s var(--ease-out-quart);
+    }
+
+    .landing-glow {
+      position: absolute;
+      inset: 10% -6% auto;
+      height: 48%;
+      pointer-events: none;
+      z-index: 0;
+      background: radial-gradient(ellipse 55% 70% at 22% 40%, rgba(125, 158, 180, 0.1), transparent 70%);
+      animation: float-glow 13s ease-in-out infinite;
+    }
+    .depth-layer {
+      position: absolute;
+      pointer-events: none;
+      border-radius: 50%;
+      z-index: 0;
+      filter: none;
+    }
+    .depth-a {
+      width: 240px;
+      height: 240px;
+      right: 4%;
+      top: 6%;
+      background: radial-gradient(circle, rgba(125, 158, 180, 0.16), transparent 68%);
+      animation: float-a 15s ease-in-out infinite;
+    }
+    .depth-b {
+      width: 150px;
+      height: 150px;
+      left: 2%;
+      bottom: 14%;
+      background: radial-gradient(circle, rgba(196, 165, 116, 0.13), transparent 70%);
+      animation: float-b 18s ease-in-out infinite;
+    }
+    @keyframes float-glow {
+      0%, 100% { transform: translate3d(var(--parallax-x), var(--parallax-y), 18px); }
+      50% { transform: translate3d(calc(var(--parallax-x) + 8px), calc(var(--parallax-y) - 12px), 52px); }
+    }
+    @keyframes float-a {
+      0%, 100% { transform: translate3d(0, 0, 36px); }
+      50% { transform: translate3d(-10px, -16px, 78px); }
+    }
+    @keyframes float-b {
+      0%, 100% { transform: translate3d(0, 0, -18px); }
+      50% { transform: translate3d(12px, 14px, 16px); }
+    }
+    .hero-tilt > *:not(.landing-glow):not(.depth-layer) { position: relative; z-index: 1; }
+
+    .demo-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: var(--font-sans);
+      font-size: 0.72rem;
+      font-weight: 500;
+      color: var(--ink-muted);
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border);
+      padding: 0.32rem 0.75rem;
+      border-radius: 999px;
+      margin-bottom: 1.6rem;
+      letter-spacing: 0.04em;
+      width: fit-content;
+    }
+    .demo-badge::before {
+      content: "";
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent-2);
+      animation: pulse-dot 2.8s ease-in-out infinite;
+    }
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+
+    .landing h1 {
+      font-family: var(--font-display);
+      font-weight: 600;
+      font-size: clamp(2.6rem, 7.4vw, 4rem);
+      line-height: 1.08;
+      letter-spacing: -0.025em;
+      color: var(--ink);
+      margin-bottom: 0.85rem;
+    }
+
+    .role-line {
+      font-family: var(--font-sans);
+      font-size: clamp(0.82rem, 2vw, 0.95rem);
+      font-weight: 500;
+      color: var(--accent);
+      margin-bottom: 1.35rem;
+      letter-spacing: 0.01em;
+      line-height: 1.5;
+      max-width: 38em;
+    }
+
+    .pitch {
+      font-size: 1.08rem;
+      color: var(--ink-muted);
+      max-width: 38em;
+      line-height: 1.7;
+    }
+
+    .hero-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.55rem 1.25rem;
+      margin-top: 1.7rem;
+      font-family: var(--font-sans);
+      font-size: 0.84rem;
+      color: var(--ink-faint);
+    }
+    .hero-meta a {
+      color: var(--ink);
+      text-decoration: none;
+      font-weight: 500;
+      border-bottom: 1px solid rgba(125, 158, 180, 0.45);
+    }
+    .hero-meta a:hover { color: #fff; border-bottom-color: var(--ink); }
+
+    .landing-cta {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.75rem 1rem;
+      margin-top: 2.25rem;
+    }
+
+    .scroll-hint {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.4rem;
+      margin-top: auto;
+      padding-top: 2.5rem;
+      font-family: var(--font-sans);
+      font-size: 0.68rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+      text-decoration: none;
+      align-self: center;
+    }
+    .scroll-hint:hover { color: var(--ink); }
+    .scroll-hint .chev {
+      width: 14px;
+      height: 14px;
+      border-right: 1.5px solid currentColor;
+      border-bottom: 1.5px solid currentColor;
+      transform: rotate(45deg);
+      animation: bob 2.2s ease-in-out infinite;
+      opacity: 0.7;
+    }
+    @keyframes bob {
+      0%, 100% { transform: rotate(45deg) translateY(0); opacity: 0.45; }
+      50% { transform: rotate(45deg) translateY(5px); opacity: 0.9; }
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-sans);
+      font-size: 0.82rem;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+      padding: 0.72rem 1.2rem;
+      border-radius: 999px;
+      text-decoration: none;
+      border: 1px solid transparent;
+      cursor: pointer;
+      transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+    .btn:hover { transform: translateY(-1px); }
+    .btn-primary {
+      background: #e8e2d6;
+      color: #15202a;
+    }
+    .btn-primary:hover {
+      background: #fff;
+      color: #15202a;
+    }
+    .btn-ghost {
+      background: transparent;
+      color: var(--ink-muted);
+      border-color: var(--border);
+    }
+    .btn-ghost:hover {
+      color: var(--ink);
+      border-color: rgba(243, 239, 230, 0.28);
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    .story-section { padding: 3.5rem 0 0; }
+    body.mode-story .story-section {
+      padding: 4.25rem 0 1rem;
+      min-height: min(70vh, 620px);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    body.mode-story .story-section.story-tall {
+      min-height: auto;
+      justify-content: flex-start;
+      padding-top: 3.5rem;
+      padding-bottom: 1rem;
+    }
+
+    .section-label {
+      font-family: var(--font-sans);
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .section-label::after {
+      content: "";
+      flex: 1;
+      max-width: 6.5rem;
+      height: 1px;
+      background: linear-gradient(90deg, rgba(125, 158, 180, 0.55), transparent);
+    }
+
+    body.mode-story .shell::before {
+      content: "";
+      position: absolute;
+      left: 0.35rem;
+      top: 0.5rem;
+      bottom: 2rem;
+      width: 1px;
+      background: linear-gradient(180deg, transparent 0%, rgba(125, 158, 180, 0.28) 12%, rgba(125, 158, 180, 0.28) 88%, transparent 100%);
+      pointer-events: none;
+      z-index: 0;
+      transform: translateZ(-56px);
+    }
+    @media (min-width: 900px) {
+      body.mode-story .shell { padding-left: 4.25rem; }
+      body.mode-story .shell::before { left: 1.55rem; }
+    }
+    body.mode-full .shell::before { display: none; }
+
+    .section-label .step-num {
+      font-family: var(--font-sans);
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      color: var(--ink-faint);
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 0.16rem 0.5rem;
+      min-width: 2.1rem;
+      text-align: center;
+      flex-shrink: 0;
+      transition: color 0.3s ease, border-color 0.3s ease, background 0.3s ease;
+    }
+    body.mode-story .story-section.is-active .step-num,
+    body.mode-story .story-section.is-passed .step-num {
+      color: #f7f4ee;
+      border-color: transparent;
+      background: var(--accent-deep);
+    }
+    body.mode-story .story-section {
+      position: relative;
+      transform-style: preserve-3d;
+    }
+    body.mode-story .cards,
+    body.mode-story .creds,
+    body.mode-story .edu,
+    body.mode-story .about-prose {
+      transform-style: preserve-3d;
+    }
+    body.mode-story .story-section::before {
+      content: "";
+      position: absolute;
+      left: -0.05rem;
+      top: 1.2rem;
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: var(--bg);
+      border: 1.5px solid rgba(125, 158, 180, 0.45);
+      box-shadow: 0 0 0 3px var(--bg);
+      z-index: 1;
+      transform: translateZ(-28px);
+      transition: border-color 0.35s ease, background 0.35s ease, transform 0.35s ease;
+    }
+    @media (min-width: 900px) {
+      body.mode-story .story-section::before { left: -2.78rem; }
+    }
+    body.mode-story .story-section.is-active::before,
+    body.mode-story .story-section.is-passed::before {
+      background: var(--accent);
+      border-color: var(--accent);
+    }
+    body.mode-full .story-section::before { display: none; }
+    body.mode-full .section-label .step-num { display: none; }
+
+    .thesis-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-family: var(--font-sans);
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #e6d3b0;
+      background: var(--magenta-soft);
+      border: 1px solid rgba(196, 165, 116, 0.35);
+      border-radius: 999px;
+      padding: 0.22rem 0.65rem;
+      margin-bottom: 0.7rem;
+    }
+    .thesis-title {
+      font-family: var(--font-display);
+      font-weight: 600;
+      font-size: 1.12rem;
+      letter-spacing: -0.015em;
+      color: var(--ink);
+      margin-bottom: 0.55rem;
+      line-height: 1.4;
+    }
+    .thesis-body {
+      font-size: 0.95rem;
+      color: var(--ink-muted);
+      line-height: 1.6;
+    }
+    body.mode-story .story-section[data-step="01"] .section-label.reveal:not(.is-in),
+    body.mode-story .story-section[data-step="03"] .section-label.reveal:not(.is-in),
+    body.mode-story .story-section[data-step="05"] .section-label.reveal:not(.is-in),
+    body.mode-story .story-section[data-step="07"] .section-label.reveal:not(.is-in) {
+      transform: translate3d(-22px, 4px, -48px) rotateY(9deg);
+    }
+    body.mode-story .story-section[data-step="02"] .section-label.reveal:not(.is-in),
+    body.mode-story .story-section[data-step="04"] .section-label.reveal:not(.is-in),
+    body.mode-story .story-section[data-step="06"] .section-label.reveal:not(.is-in),
+    body.mode-story .story-section[data-step="08"] .section-label.reveal:not(.is-in) {
+      transform: translate3d(22px, 4px, -48px) rotateY(-9deg);
+    }
+
+    .about-prose {
+      max-width: var(--max);
+      color: var(--ink-muted);
+      font-size: 1.04rem;
+    }
+    .about-prose p + p { margin-top: 1rem; }
+    .about-prose strong { color: var(--ink); font-weight: 600; }
+
+    .cards {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      max-width: var(--max);
+    }
+
+    .card {
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.025), transparent 40%), var(--bg-panel);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.45rem 1.5rem 1.4rem 1.55rem;
+      box-shadow: var(--shadow);
+      position: relative;
+      transition: transform var(--dur-fast) var(--ease-out-quart), box-shadow 0.35s ease, border-color 0.3s ease;
+    }
+    .card::before {
+      content: "";
+      position: absolute;
+      top: 14px;
+      bottom: 14px;
+      left: 0;
+      width: 2px;
+      background: var(--accent);
+      border-radius: 2px;
+      opacity: 0.85;
+    }
+    .card::after { content: none; }
+    .card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-hover);
+      border-color: rgba(125, 158, 180, 0.28);
+    }
+
+    .card-head {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 0.35rem 1rem;
+      margin-bottom: 0.25rem;
+    }
+    .card-company {
+      font-family: var(--font-display);
+      font-weight: 600;
+      font-size: 1.22rem;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+    }
+    .card-dates {
+      font-family: var(--font-sans);
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--ink-faint);
+      white-space: nowrap;
+      letter-spacing: 0.02em;
+    }
+    .card-role {
+      font-family: var(--font-sans);
+      font-size: 0.86rem;
+      font-weight: 500;
+      color: var(--accent);
+      margin-bottom: 0.9rem;
+    }
+    .card ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.55rem;
+    }
+    .card li {
+      position: relative;
+      padding-left: 1rem;
+      font-size: 0.95rem;
+      color: var(--ink-muted);
+      line-height: 1.55;
+    }
+    .card li::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0.62em;
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--accent);
+      opacity: 0.75;
+    }
+
+    .edu {
+      max-width: var(--max);
+      display: grid;
+      gap: 0.85rem;
+    }
+    .edu-item {
+      padding: 1.05rem 1.2rem;
+      background: var(--bg-panel);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      border-left: 2px solid var(--accent-2);
+      transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+    }
+    .edu-item:hover {
+      transform: translateY(-2px);
+      border-color: rgba(196, 165, 116, 0.35);
+      box-shadow: var(--shadow);
+    }
+    .edu-school {
+      font-family: var(--font-display);
+      font-weight: 600;
+      font-size: 1.05rem;
+      color: var(--ink);
+    }
+    .edu-detail {
+      font-size: 0.94rem;
+      color: var(--ink-muted);
+      margin-top: 0.2rem;
+    }
+    .edu-year {
+      font-size: 0.75rem;
+      color: var(--ink-faint);
+      font-weight: 500;
+      margin-top: 0.4rem;
+    }
+
+    .edu-block { max-width: var(--max); margin-top: 1.75rem; }
+    .edu-block:first-of-type { margin-top: 0.35rem; }
+    .edu-subhead {
+      font-family: var(--font-sans);
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--accent-2);
+      margin: 0 0 0.85rem;
+    }
+    .edu-block .edu,
+    .edu-block .cards { max-width: none; }
+
+    .course-list {
+      list-style: none;
+      margin: 0.85rem 0 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+    .course-list li {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 9.25rem;
+      align-items: center;
+      column-gap: 0.75rem;
+      font-size: 0.9rem;
+      color: var(--ink-muted);
+      padding: 0.48rem 0.75rem;
+      background: rgba(10, 14, 18, 0.28);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+    }
+    .course-list li::before { content: none; }
+    .course-list .course-name { color: var(--ink); font-weight: 500; min-width: 0; }
+    .level-tag {
+      font-family: var(--font-sans);
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      padding: 0.16rem 0.45rem;
+      border-radius: 999px;
+      border: 1px solid rgba(125, 158, 180, 0.35);
+      color: #d5e3ee;
+      background: var(--accent-soft);
+      justify-self: stretch;
+      text-align: center;
+      white-space: nowrap;
+    }
+    .level-tag.grad {
+      border-color: rgba(196, 165, 116, 0.4);
+      color: #ead9b8;
+      background: rgba(196, 165, 116, 0.1);
+    }
+    .courses-label {
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+      margin: 1rem 0 0.35rem;
+    }
+
+    .creds {
+      max-width: var(--max);
+      display: grid;
+      gap: 0.5rem;
+    }
+    .cred-item {
+      font-size: 0.95rem;
+      color: var(--ink-muted);
+      padding: 0.62rem 0.95rem;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: var(--bg-panel);
+      display: flex;
+      align-items: flex-start;
+      gap: 0.7rem;
+    }
+    .cred-item::before {
+      content: "";
+      width: 6px;
+      height: 6px;
+      margin-top: 0.55em;
+      border-radius: 50%;
+      background: var(--accent-2);
+      flex-shrink: 0;
+    }
+    .award-item {
+      border-left: 2px solid rgba(196, 165, 116, 0.55);
+    }
+
+    .cta {
+      max-width: var(--max);
+      margin-top: 0.5rem;
+      background:
+        linear-gradient(180deg, rgba(125, 158, 180, 0.08), transparent 42%),
+        var(--bg-panel);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 2.35rem 1.75rem;
+      text-align: center;
+      box-shadow: var(--shadow);
+      position: relative;
+    }
+    .cta::before { content: none; }
+    .cta h2 {
+      font-family: var(--font-display);
+      font-weight: 600;
+      font-size: 1.7rem;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.55rem;
+    }
+    .cta p {
+      color: var(--ink-muted);
+      font-size: 0.98rem;
+      margin-bottom: 1.45rem;
+      max-width: 32em;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .cta-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.7rem;
+      justify-content: center;
+    }
+
+    footer {
+      max-width: calc(var(--max) + 6rem);
+      margin: 0 auto;
+      padding: 2.25rem 1.5rem 3rem;
+      text-align: center;
+      font-size: 0.75rem;
+      color: var(--ink-faint);
+      letter-spacing: 0.03em;
+      border-top: 1px solid transparent;
+    }
+
+    body.mode-story .reveal {
+      opacity: 0;
+      transform: translate3d(0, 26px, -72px) rotateX(8deg);
+      transform-style: preserve-3d;
+      transition:
+        opacity var(--dur-reveal) var(--ease-out-expo),
+        transform var(--dur-reveal) var(--ease-out-expo);
+      transition-delay: var(--d, 0ms);
+      will-change: opacity, transform;
+    }
+    body.mode-story .reveal.from-up { transform: translate3d(0, 24px, -64px) rotateX(8deg); }
+    body.mode-story .reveal.from-left { transform: translate3d(-26px, 14px, -88px) rotateY(10deg) rotateX(4deg); }
+    body.mode-story .reveal.from-right { transform: translate3d(26px, 14px, -88px) rotateY(-10deg) rotateX(4deg); }
+    body.mode-story .reveal.from-scale { transform: translate3d(0, 20px, -110px) rotateX(11deg) scale(0.97); }
+    body.mode-story .reveal.from-rotate { transform: translate3d(0, 16px, -80px) rotateY(-8deg) rotateX(6deg); }
+    body.mode-story .reveal.is-in {
+      opacity: 1;
+      transform: translateZ(12px);
+      will-change: auto;
+    }
+    body.mode-story .section-label.reveal.is-in { transform: none; }
+    body.mode-story .card.reveal.is-in,
+    body.mode-story .edu-item.reveal.is-in,
+    body.mode-story .cred-item.reveal.is-in,
+    body.mode-story .award-item.reveal.is-in,
+    body.mode-story .cta.reveal.is-in {
+      transform: translate3d(0, 0, 22px);
+      transition: transform 0.45s var(--ease-out-quart), box-shadow 0.35s ease, border-color 0.3s ease, opacity var(--dur-reveal) var(--ease-out-expo);
+    }
+    body.mode-story .stagger > .reveal { --d: calc(var(--i, 0) * 70ms); }
+    body.mode-story .stagger.stagger-tight > .reveal { --d: calc(var(--i, 0) * 36ms); }
+    body.mode-story .section-label.reveal { transform: translate3d(-14px, 0, -36px) rotateY(7deg); }
+    body.mode-story .section-label.reveal.is-in { transform: none; }
+
+    /* Every box uses the same depth motion, not a left/right swing. */
+    body.mode-story .card.reveal,
+    body.mode-story .edu-item.reveal,
+    body.mode-story .cred-item.reveal,
+    body.mode-story .award-item.reveal,
+    body.mode-story .cta.reveal,
+    body.mode-story .section-label.reveal,
+    body.mode-story .story-section[data-step] .section-label.reveal:not(.is-in) {
+      transform: translate3d(0, 28px, -84px) rotateX(9deg);
+    }
+
+    body.mode-story .landing .reveal {
+      animation: hero-in var(--dur-reveal) var(--ease-out-expo) both;
+      animation-delay: var(--d, 0ms);
+      opacity: 1;
+      transform: none;
+    }
+    @keyframes hero-in {
+      from { opacity: 0; transform: translate3d(0, 22px, -70px) rotateX(9deg); }
+      to { opacity: 1; transform: translateZ(10px); }
+    }
+    body.mode-story .landing .reveal.from-left { animation-name: hero-in-left; }
+    body.mode-story .landing .reveal.from-scale { animation-name: hero-in; }
+    @keyframes hero-in-left {
+      from { opacity: 0; transform: translate3d(-20px, 10px, -60px) rotateY(8deg); }
+      to { opacity: 1; transform: translateZ(8px); }
+    }
+
+    body.mode-full .landing {
+      min-height: auto;
+      padding: 2.5rem 0 1.25rem;
+    }
+    body.mode-full .scroll-hint { display: none; }
+    body.mode-full .landing-cta .btn-primary { display: none; }
+    body.mode-full .hud-scan { display: none; }
+    body.mode-full .story-section {
+      padding: 2.35rem 0 0;
+      min-height: 0;
+    }
+    body.mode-full .reveal {
+      opacity: 1 !important;
+      transform: none !important;
+      filter: none !important;
+      transition: none !important;
+      animation: none !important;
+      will-change: auto;
+    }
+    body.mode-full .hero-tilt { transform: none; }
+    body.mode-full .depth-a,
+    body.mode-full .depth-b,
+    body.mode-full .landing-glow {
+      animation-name: float-soft;
+      animation-duration: 16s;
+    }
+    @keyframes float-soft {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-6px); }
+    }
+    body.mode-full .card:hover,
+    body.mode-full .edu-item:hover,
+    body.mode-full .cred-item:hover,
+    body.mode-full .award-item:hover,
+    body.mode-full .cta:hover {
+      transform: translateY(-1px) !important;
+    }
+
+    @media (pointer: fine) and (min-width: 900px) {
+      body.mode-story .hero-tilt {
+        transform: rotateX(calc(var(--py) * -4.5deg)) rotateY(calc(var(--px) * 5.5deg));
+      }
+      body.mode-story .card.reveal.is-in,
+      body.mode-story .edu-item.reveal.is-in,
+      body.mode-story .cred-item.reveal.is-in,
+      body.mode-story .award-item.reveal.is-in,
+      body.mode-story .cta.reveal.is-in {
+        transform:
+          translate3d(0, 0, 22px)
+          rotateX(calc(var(--py) * -2.2deg));
+      }
+      body.mode-story .card.reveal.is-in:hover,
+      body.mode-story .edu-item.reveal.is-in:hover,
+      body.mode-story .cred-item.reveal.is-in:hover,
+      body.mode-story .award-item.reveal.is-in:hover,
+      body.mode-story .cta.reveal.is-in:hover {
+        transform:
+          translate3d(0, -4px, 36px)
+          rotateX(calc(var(--py) * -2.2deg));
+      }
+    }
+
+    @media (max-width: 720px) {
+      body.mode-story .shell::before { display: none; }
+      body.mode-story .story-section::before { display: none; }
+      .nav-links { display: none; }
+      .nav { padding: 0.6rem 1rem; }
+      .shell { padding: 0 1.1rem 3rem; }
+      .landing { padding: 2rem 0 2.25rem; }
+      .story-section { padding: 2.5rem 0 0; }
+      body.mode-story .story-section {
+        min-height: 0;
+        padding: 2.75rem 0 0.5rem;
+      }
+      body.mode-story .reveal.from-left:not(.is-in),
+      body.mode-story .reveal.from-right:not(.is-in),
+      body.mode-story .reveal.from-rotate:not(.is-in),
+      body.mode-story .reveal.from-scale:not(.is-in),
+      body.mode-story .reveal.from-up:not(.is-in),
+      body.mode-story .section-label.reveal:not(.is-in),
+      body.mode-story .story-section[data-step] .section-label.reveal:not(.is-in) {
+        transform: translate3d(0, 12px, -22px) rotateX(3deg) !important;
+      }
+      body.mode-story .card.reveal.is-in,
+      body.mode-story .edu-item.reveal.is-in,
+      body.mode-story .cred-item.reveal.is-in,
+      body.mode-story .award-item.reveal.is-in,
+      body.mode-story .cta.reveal.is-in,
+      body.mode-story .reveal.is-in {
+        transform: none;
+      }
+      body.mode-story .shell::before,
+      body.mode-story .story-section::before { transform: none; }
+      .depth-a, .depth-b, .landing-glow { display: none; }
+      .hero-tilt { transform: none !important; }
+      .shell { perspective: 1100px; }
+      .card { padding: 1.2rem 1.1rem 1.15rem 1.2rem; }
+      .cta { padding: 1.7rem 1.15rem; }
+      .role-line { font-size: 0.8rem; }
+      .mode-btn, .lang-btn { padding: 0.3rem 0.48rem; font-size: 0.64rem; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .demo-badge::before,
+      .scroll-hint .chev { animation: none !important; }
+      .hud-scan { display: none; }
+      .landing-glow,
+      .depth-layer,
+      .depth-a,
+      .depth-b,
+      .hero-tilt { animation: none !important; transform: none !important; transition: none !important; }
+      .card, .btn, .edu-item, .cred-item, .award-item, .cta { transition: none !important; }
+      .card:hover, .edu-item:hover, .cred-item:hover, .award-item:hover, .cta:hover,
+      body.mode-full .card:hover, body.mode-full .edu-item:hover,
+      body.mode-full .cred-item:hover, body.mode-full .award-item:hover,
+      body.mode-full .cta:hover { transform: none !important; }
+      body.mode-story .shell::before,
+      body.mode-story .story-section::before { transform: none !important; }
+      .shell { perspective: none; }
+      body.mode-story .reveal,
+      body.mode-story .landing .reveal {
+        opacity: 1 !important;
+        transform: none !important;
+        filter: none !important;
+        transition: none !important;
+        animation: none !important;
+        will-change: auto;
+      }
+    }
+  </style>
+</head>
+<body class="mode-story" id="top">
+  <div class="hud-scan" aria-hidden="true"></div>
+  <div class="nav-wrap" id="nav">
+    <nav class="nav" aria-label="Primary">
+      <a class="nav-mark" href="#top" data-i18n="nav.mark">Nathan Newberry</a>
+      <div class="nav-right">
+        <ul class="nav-links">
+          <li><a href="#about" data-i18n="nav.about">About</a></li>
+          <li><a href="#professional" data-i18n="nav.professional">Professional</a></li>
+          <li><a href="#military" data-i18n="nav.military">Military</a></li>
+          <li><a href="#awards" data-i18n="nav.awards">Awards</a></li>
+          <li><a href="#education" data-i18n="nav.education">Education</a></li>
+          <li><a href="#contact" data-i18n="nav.contact">Contact</a></li>
+        </ul>
+        <div class="mode-switch" role="group" aria-label="View mode">
+          <button type="button" class="mode-btn active" data-mode="story" aria-pressed="true" data-i18n="mode.story">Story</button>
+          <button type="button" class="mode-btn" data-mode="full" aria-pressed="false" data-i18n="mode.full">Full</button>
+        </div>
+        <div class="edit-controls" role="group" aria-label="Edit content">
+          <button type="button" class="mode-btn edit-toggle" id="edit-toggle" data-i18n="edit.toggle" aria-pressed="false">Edit</button>
+          <button type="button" class="mode-btn edit-reset" id="edit-reset" data-i18n="edit.reset" hidden>Reset</button>
+        </div>
+        <div class="lang-switch" role="group" aria-label="Language">
+          <button type="button" class="lang-btn active" data-lang="en" aria-pressed="true">EN</button>
+          <button type="button" class="lang-btn" data-lang="ja" aria-pressed="false" lang="ja">日本語</button>
+          <button type="button" class="lang-btn" data-lang="ko" aria-pressed="false" lang="ko">한국어</button>
+          <button type="button" class="lang-btn" data-lang="es" aria-pressed="false">ES</button>
+        </div>
+      </div>
+    </nav>
+  </div>
+
+  <main class="shell scene">
+    <header class="landing" id="landing">
+      <div class="hero-tilt" id="hero-tilt">
+      <div class="landing-glow" aria-hidden="true"></div>
+      <div class="depth-layer depth-a" aria-hidden="true"></div>
+      <div class="depth-layer depth-b" aria-hidden="true"></div>
+      <p class="demo-badge reveal is-in from-left" data-i18n="hero.badge">Personal site · ready for updates</p>
+      <h1 class="reveal is-in from-scale" data-i18n="hero.name" style="--d:90ms">Nathan Newberry</h1>
+      <p class="role-line reveal is-in from-left" data-i18n="hero.role" style="--d:160ms">Operations &amp; Program Coordination · Project Management · Process Optimization · MBA | Veteran</p>
+      <p class="pitch reveal is-in from-up" data-i18n="hero.pitch" style="--d:230ms">
+        Operations and program coordination professional with U.S. government and
+        multinational experience. MBA candidate in Japan (Marketing and Management)
+        and U.S. Navy veteran — skilled at streamlining operations, solving complex
+        problems, and building cross-cultural relationships with measurable impact.
+      </p>
+      <div class="hero-meta reveal is-in from-up" style="--d:300ms">
+        <span data-i18n="hero.location">Oita / Beppu, Japan · open to Tokyo / relocation</span>
+        <a href="mailto:nathne16@gmail.com" data-i18n="hero.email">nathne16@gmail.com</a>
+        <a href="https://linkedin.com/in/nathne/" target="_blank" rel="noopener noreferrer" data-i18n="hero.linkedin">LinkedIn</a>
+      </div>
+      <div class="landing-cta reveal is-in from-scale" style="--d:370ms">
+        <a class="btn btn-primary" href="#about" data-i18n="hero.cta">Begin the story</a>
+        <a class="btn btn-ghost" href="#about" id="skip-to-content" data-i18n="hero.skip">Skip to content</a>
+      </div>
+      <a class="scroll-hint" href="#about" aria-hidden="true">
+        <span data-i18n="hero.scroll">Scroll</span>
+        <span class="chev"></span>
+      </a>
+      </div>
+    </header>
+
+    <section id="about" class="story-section" data-step="01" aria-labelledby="about-heading">
+      <h2 class="section-label reveal from-left" id="about-heading"><span class="step-num" aria-hidden="true">01</span><span data-i18n="about.label">About</span></h2>
+      <div class="about-prose stagger">
+        <p class="reveal from-left" style="--i:0" data-i18n-html="about.p1">
+          Results-driven professional with international experience in
+          <strong>program management</strong>, business analysis, and consulting.
+          I bring structured program coordination and process optimization from
+          civil service and consulting into complex, multi-stakeholder environments.
+          I care about <strong>measurable outcomes</strong>: clearing backlogs,
+          cutting cycle time, and making cross-functional work actually stick.
+        </p>
+        <p class="reveal from-right" style="--i:1" data-i18n-html="about.p2">
+          <strong>Work authorization:</strong> Japan &amp; U.S. · Japan student visa
+          through May 2027 · earliest full-time start ~Mar 2027 after MBA.
+          English native; Japanese J-CAT 180 (≈ JLPT N3) (limited working proficiency).
+        </p>
+      </div>
+    </section>
+
+    <section id="professional" class="story-section story-tall" data-step="02" aria-labelledby="pro-heading">
+      <h2 class="section-label reveal from-right" id="pro-heading"><span class="step-num" aria-hidden="true">02</span><span data-i18n="professional.label">Professional Experience</span></h2>
+      <div class="cards stagger">
+        <article class="card reveal from-right" style="--i:0">
+          <div class="card-head">
+            <h3 class="card-company" data-i18n="federal.company">United States Federal Government (Civil Service)</h3>
+            <time class="card-dates" datetime="2022-06" data-i18n="federal.dates">Jun 2022 — Feb 2025</time>
+          </div>
+          <p class="card-role" data-i18n="federal.role">Program Coordinator · Japan</p>
+          <ul>
+            <li data-i18n="federal.b1">Reduced backlog 33% and sped response ~40% by building an enterprise automated task-tracking system that replaced fragmented manual workflows.</li>
+            <li data-i18n="federal.b2">Led a 9-person cross-functional team (finance, logistics, legal) to digitize a records backlog; cut retrieval times in half and reduced discrepancies.</li>
+            <li data-i18n="federal.b3">Saved ~$275K/year by auditing workflows across 4 departments, cutting redundancies, modernizing access controls; admin errors down ~30%.</li>
+            <li data-i18n="federal.b4">Ensured adherence to federal regulations while optimizing processes for military and civilian personnel; monitored sensitive information, assets, and personnel.</li>
+          </ul>
+        </article>
+        <article class="card reveal from-left" style="--i:1">
+          <div class="card-head">
+            <h3 class="card-company" data-i18n="gbx.company">GBX Consultants, Inc.</h3>
+            <time class="card-dates" datetime="2021-03" data-i18n="gbx.dates">Mar 2021 — Jun 2022</time>
+          </div>
+          <p class="card-role" data-i18n="gbx.role">Senior Advisor (promoted from Associate) · Tokyo</p>
+          <ul>
+            <li data-i18n="gbx.b1">Automated/redesigned client onboarding; onboarding time down up to 23%, processing 13%, retention +24%.</li>
+            <li data-i18n="gbx.b2">Built data-driven training and automated reporting dashboards; engagement +38%, manual reporting errors −14%.</li>
+            <li data-i18n="gbx.b3">Root-cause analysis on churn + automation recommendations; attrition −18%, ~120 staff hours/month of manual work removed.</li>
+            <li data-i18n="gbx.b4">Advised clients on financial management, resource allocation, and risk mitigation; kept project objectives on schedule and strengthened stakeholder relationships.</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section id="military" class="story-section" data-step="03" aria-labelledby="mil-heading">
+      <h2 class="section-label reveal from-left" id="mil-heading"><span class="step-num" aria-hidden="true">03</span><span data-i18n="military.label">Military Experience</span></h2>
+      <div class="cards">
+        <article class="card reveal from-right">
+          <div class="card-head">
+            <h3 class="card-company" data-i18n="navy.company">United States Navy</h3>
+            <time class="card-dates" datetime="2012-05" data-i18n="navy.dates">May 2012 — Mar 2016</time>
+          </div>
+          <p class="card-role" data-i18n="navy.role">Petty Officer</p>
+          <ul>
+            <li data-i18n="navy.b1">Led/trained a 12-person technical team on sonar systems; data errors −16%; supported 4 multinational maritime security exercises.</li>
+            <li data-i18n="navy.b2">Using AN/SQQ-32(V)3 sonar, identified and classified 28 underwater contacts (submarines, surface vessels, marine life) in support of underwater-warfare operations.</li>
+            <li data-i18n="navy.b3">Standardized troubleshooting protocols and tech platforms; diagnostic time −15%, processing +22%; maintained, calibrated, and troubleshot sonar systems.</li>
+            <li data-i18n="navy.b4">Technical liaison in multinational ops; predictive maintenance cut allied response times ~20% and avoided ~$1.2M in repair costs.</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section id="awards" class="story-section" data-step="04" aria-labelledby="awards-heading">
+      <h2 class="section-label reveal from-right" id="awards-heading"><span class="step-num" aria-hidden="true">04</span><span data-i18n="awards.label">Awards</span></h2>
+      <div class="edu-block">
+        <h3 class="edu-subhead reveal from-left" data-i18n="award.military">Military awards</h3>
+        <div class="creds stagger">
+          <div class="cred-item award-item reveal from-right" style="--i:0" data-i18n="award.m1">Navy &amp; Marine Corps Achievement Medal</div>
+          <div class="cred-item award-item reveal from-left" style="--i:1" data-i18n="award.m2">Distinguished Graduate, Navy Technical School (MN A-School)</div>
+          <div class="cred-item award-item reveal from-right" style="--i:2" data-i18n="award.m3">Enlisted Surface Warfare Specialist</div>
+          <div class="cred-item award-item reveal from-left" style="--i:3" data-i18n="award.m4">Good Conduct Award</div>
+          <div class="cred-item award-item reveal from-right" style="--i:4" data-i18n="award.m5">National Defense Service Medal</div>
+          <div class="cred-item award-item reveal from-left" style="--i:5" data-i18n="award.m6">Navy and Marine Corps Overseas Service Ribbon</div>
+          <div class="cred-item award-item reveal from-right" style="--i:6" data-i18n="award.m7">Marksmanship Medal</div>
+          <div class="cred-item award-item reveal from-left" style="--i:7" data-i18n="award.m8">Honorable Discharge</div>
+        </div>
+      </div>
+      <div class="edu-block">
+        <h3 class="edu-subhead reveal from-right" data-i18n="award.academic">Academic awards</h3>
+        <div class="creds stagger">
+          <div class="cred-item award-item reveal from-right" style="--i:0" data-i18n="award.c1">Beta Gamma Sigma Honor Society</div>
+          <div class="cred-item award-item reveal from-left" style="--i:1" data-i18n="award.c2">JASSO Scholarship</div>
+        </div>
+      </div>
+      <div class="edu-block">
+        <h3 class="edu-subhead reveal from-left" data-i18n="award.civilian">Civilian awards</h3>
+        <div class="creds stagger">
+          <div class="cred-item award-item reveal" style="--i:0" data-i18n="award.v1">Small Contracting Squadron of the Year</div>
+          <div class="cred-item award-item reveal" style="--i:1" data-i18n="award.v2">Civilian of the Quarter, Civil Engineering</div>
+          <div class="cred-item award-item reveal" style="--i:2" data-i18n="award.v3">Innovation Award, GBX Consultants</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="education" class="story-section story-tall" data-step="05" aria-labelledby="edu-heading">
+      <h2 class="section-label reveal from-left" id="edu-heading"><span class="step-num" aria-hidden="true">05</span><span data-i18n="education.label">Education</span></h2>
+
+      <div class="edu-block">
+        <h3 class="edu-subhead reveal from-left" data-i18n="edu.degrees">Degrees</h3>
+        <div class="edu stagger">
+          <div class="edu-item reveal from-right" style="--i:0">
+            <p class="edu-school" data-i18n="edu1.school">Ritsumeikan Graduate School of Management</p>
+            <p class="edu-detail" data-i18n="edu1.detail">MBA, Marketing and Management · Beta Gamma Sigma Honor Society</p>
+            <p class="edu-year" data-i18n="edu1.year">Apr 2025 — Mar 2027</p>
+          </div>
+          <div class="edu-item reveal from-left" style="--i:1">
+            <p class="edu-school" data-i18n="edu2.school">Ritsumeikan Asia Pacific University</p>
+            <p class="edu-detail" data-i18n="edu2.detail">BBA, Accounting and Finance</p>
+            <p class="edu-year" data-i18n="edu2.year">Apr 2016 — Mar 2020</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="edu-block">
+        <h3 class="edu-subhead reveal from-right" data-i18n="edu.teaching">Instructional Appointments</h3>
+        <div class="cards">
+          <article class="card reveal from-right" style="--i:0">
+            <div class="card-head">
+              <h3 class="card-company" data-i18n="acad.company">Ritsumeikan Asia Pacific University</h3>
+              <time class="card-dates" datetime="2025-04" data-i18n="acad.dates">Apr 2025 — Present</time>
+            </div>
+            <p class="card-role" data-i18n="acad.role">Contract · Japan</p>
+            <ul>
+              <li data-i18n="acad.b1">Delivered university instruction under academic contract across undergraduate and graduate courses.</li>
+              <li data-i18n="acad.b2">Designed sessions and assessments that connected theory to applied cases, supporting student mastery across quantitative and organizational topics.</li>
+              <li data-i18n="acad.b3">Coordinated with faculty and program stakeholders to maintain academic standards and a consistent learning experience.</li>
+            </ul>
+            <p class="courses-label" data-i18n="acad.coursesLabel">Courses &amp; instructional appointments</p>
+            <ul class="course-list">
+              <li>
+                <span class="course-name" data-i18n="acad.course1">Data Analytics</span>
+                <span class="level-tag grad" data-i18n="acad.course1Level">Graduate</span>
+              </li>
+              <li>
+                <span class="course-name" data-i18n="acad.course2">Business Ethics</span>
+                <span class="level-tag grad" data-i18n="acad.course2Level">Graduate</span>
+              </li>
+              <li>
+                <span class="course-name" data-i18n="acad.course3">Advanced Organizational Behavior</span>
+                <span class="level-tag" data-i18n="acad.course3Level">Undergraduate</span>
+              </li>
+              <li>
+                <span class="course-name" data-i18n="acad.course4">Health Sciences</span>
+                <span class="level-tag" data-i18n="acad.course4Level">Undergraduate</span>
+              </li>
+              <li>
+                <span class="course-name" data-i18n="acad.course5">Language Instructional Support</span>
+                <span class="level-tag" data-i18n="acad.course5Level">Undergraduate</span>
+              </li>
+            </ul>
+          </article>
+        </div>
+      </div>
+
+      <div class="edu-block">
+        <h3 class="edu-subhead reveal from-left" data-i18n="edu.thesisSub">Thesis</h3>
+        <div class="cards">
+          <article class="card reveal from-right" style="--i:0">
+            <div class="card-head">
+              <h3 class="card-company" data-i18n="thesis.label">Thesis (in progress)</h3>
+              <time class="card-dates" data-i18n="thesis.dates">Updating as research progresses</time>
+            </div>
+            <p class="thesis-badge" data-i18n="thesis.badge">Work in progress</p>
+            <p class="thesis-title" data-i18n="thesis.title">Understanding Patterns of AI Engagement: Differentiating Individual Users by Engagement Depth and Usage Scope</p>
+            <p class="thesis-body" data-i18n="thesis.body">Research on how people engage with AI differently by depth versus breadth of use, developing a framework for segmenting users by engagement patterns. Marked as work-in-progress and updated as the research advances.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="ai-training" class="story-section" data-step="06" aria-labelledby="ai-heading">
+      <h2 class="section-label reveal from-right" id="ai-heading"><span class="step-num" aria-hidden="true">06</span><span data-i18n="ai.label">AI Training</span></h2>
+      <div class="creds stagger">
+        <div class="cred-item reveal from-right" style="--i:0" data-i18n="ai.item1">Generative AI for Business / Productivity workflows</div>
+        <div class="cred-item reveal from-left" style="--i:1" data-i18n="ai.item2">Prompt engineering for analysis &amp; reporting</div>
+        <div class="cred-item reveal from-right" style="--i:2" data-i18n="ai.item3">Applied Python for data &amp; automation</div>
+      </div>
+    </section>
+
+
+    <section id="credentials" class="story-section story-tall" data-step="07" aria-labelledby="creds-heading">
+      <h2 class="section-label reveal from-left" id="creds-heading"><span class="step-num" aria-hidden="true">07</span><span data-i18n="creds.label">Credentials &amp; Community</span></h2>
+      <div class="creds stagger">
+        <div class="cred-item reveal from-right" style="--i:0" data-i18n="cred.1">U.S. Department of Defense Security Clearance</div>
+        <div class="cred-item reveal from-left" style="--i:1" data-i18n="cred.2">Navy MEDIC Emergency First Aid (issued Jun 2013)</div>
+        <div class="cred-item reveal from-right" style="--i:2" data-i18n="cred.3">SRF B/A Certification (issued Jun 2013 · expires Jan 2036)</div>
+        <div class="cred-item reveal from-left" style="--i:3" data-i18n="cred.4">Tokyo 2020 Olympic Support</div>
+        <div class="cred-item reveal from-right" style="--i:4" data-i18n="cred.5">Osaka Expo 2025 Volunteer</div>
+        <div class="cred-item reveal from-left" style="--i:5" data-i18n="cred.6">Kumamoto Earthquake Relief</div>
+      </div>
+    </section>
+
+    <section id="contact" class="story-section" data-step="08" aria-labelledby="contact-heading">
+      <h2 class="section-label reveal from-right" id="contact-heading"><span class="step-num" aria-hidden="true">08</span><span data-i18n="contact.label">Contact</span></h2>
+      <div class="cta reveal from-right">
+        <h2 data-i18n="contact.title">Let’s coordinate the next move.</h2>
+        <p data-i18n="contact.body">
+          Open to operations, program coordination, and project management roles
+          in Japan (Tokyo or relocation). Earliest full-time start ~Mar 2027 after MBA.
+        </p>
+        <div class="cta-actions">
+          <a class="btn btn-primary" href="mailto:nathne16@gmail.com" data-i18n="contact.email">nathne16@gmail.com</a>
+          <a class="btn btn-ghost" href="https://linkedin.com/in/nathne/" target="_blank" rel="noopener noreferrer" data-i18n="contact.linkedin">LinkedIn</a>
+          <a class="btn btn-ghost" href="https://github.com/network26" target="_blank" rel="noopener noreferrer">GitHub</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <span data-i18n="footer.text">Nathan Newberry · Oita / Beppu, Japan · Operations &amp; Program Coordination</span>
+  </footer>
+
+  <script>
+
+    (function () {
+      var mqReduce = window.matchMedia("(prefers-reduced-motion: reduce)");
+      var reduceMotion = mqReduce.matches;
+      var nav = document.getElementById("nav");
+      if (nav) {
+        var onScroll = function () {
+          nav.classList.toggle("scrolled", window.scrollY > 8);
+        };
+        onScroll();
+        window.addEventListener("scroll", onScroll, { passive: true });
+      }
+
+      /* Light hero parallax (pointer + scroll), story mode only */
+      var landing = document.getElementById("landing");
+      var glow = landing ? landing.querySelector(".landing-glow") : null;
+      var parallaxRaf = 0;
+      var px = 0, py = 0, tx = 0, ty = 0;
+      function applyParallax() {
+        parallaxRaf = 0;
+        if (!landing || reduceMotion || !document.body.classList.contains("mode-story")) {
+          if (landing) {
+            landing.style.setProperty("--parallax-x", "0px");
+            landing.style.setProperty("--parallax-y", "0px");
+          }
+          return;
+        }
+        px += (tx - px) * 0.12;
+        py += (ty - py) * 0.12;
+        landing.style.setProperty("--parallax-x", px.toFixed(2) + "px");
+        landing.style.setProperty("--parallax-y", py.toFixed(2) + "px");
+        if (Math.abs(tx - px) > 0.05 || Math.abs(ty - py) > 0.05) {
+          parallaxRaf = requestAnimationFrame(applyParallax);
+        }
+      }
+      function queueParallax() {
+        if (!parallaxRaf) parallaxRaf = requestAnimationFrame(applyParallax);
+      }
+      if (landing && window.matchMedia("(pointer: fine)").matches) {
+        landing.addEventListener("pointermove", function (e) {
+          if (reduceMotion || !document.body.classList.contains("mode-story")) return;
+          var r = landing.getBoundingClientRect();
+          var nx = ((e.clientX - r.left) / r.width - 0.5) * 16;
+          var ny = ((e.clientY - r.top) / r.height - 0.5) * 10;
+          tx = nx; ty = ny;
+          queueParallax();
+        }, { passive: true });
+        landing.addEventListener("pointerleave", function () {
+          tx = 0; ty = 0; queueParallax();
+        });
+      }
+      window.addEventListener("scroll", function () {
+        if (reduceMotion || !glow || !document.body.classList.contains("mode-story")) return;
+        var y = Math.min(window.scrollY, 420);
+        ty = y * -0.04;
+        queueParallax();
+      }, { passive: true });
+
+      var tiltQuery = window.matchMedia("(pointer: fine) and (min-width: 900px)");
+      function setTilt(nx, ny) {
+        document.documentElement.style.setProperty("--px", String(nx));
+        document.documentElement.style.setProperty("--py", String(ny));
+      }
+      function clearTilt() { setTilt(0, 0); }
+      if (tiltQuery.matches) {
+        window.addEventListener("pointermove", function (e) {
+          if (reduceMotion || !document.body.classList.contains("mode-story")) {
+            clearTilt();
+            return;
+          }
+          var nx = (e.clientX / Math.max(window.innerWidth, 1) - 0.5) * 2;
+          var ny = (e.clientY / Math.max(window.innerHeight, 1) - 0.5) * 2;
+          setTilt(nx.toFixed(3), ny.toFixed(3));
+        }, { passive: true });
+      }
+      if (tiltQuery.addEventListener) {
+        tiltQuery.addEventListener("change", function (e) {
+          if (!e.matches) clearTilt();
+        });
+      }
+
+      var I18N = {
+  "en": {
+    "nav.mark": "Nathan Newberry",
+    "nav.about": "About",
+    "nav.professional": "Professional",
+    "nav.military": "Military",
+    "nav.awards": "Awards",
+    "nav.education": "Education",
+    "nav.contact": "Contact",
+    "hero.badge": "Personal site · ready for updates",
+    "hero.name": "Nathan Newberry",
+    "hero.role": "Operations & Program Coordination · Project Management · Process Optimization · MBA | Veteran",
+    "hero.pitch": "Operations and program coordination professional with U.S. government and multinational experience. MBA candidate in Japan (Marketing and Management) and U.S. Navy veteran — skilled at streamlining operations, solving complex problems, and building cross-cultural relationships with measurable impact.",
+    "hero.location": "Oita / Beppu, Japan · open to Tokyo / relocation",
+    "hero.linkedin": "LinkedIn",
+    "about.label": "About",
+    "about.p1": "Results-driven professional with international experience in <strong>program management</strong>, business analysis, and consulting. I bring structured program coordination and process optimization from civil service and consulting into complex, multi-stakeholder environments. I care about <strong>measurable outcomes</strong>: clearing backlogs, cutting cycle time, and making cross-functional work actually stick.",
+    "about.p2": "<strong>Work authorization:</strong> Japan &amp; U.S. · Japan student visa through May 2027 · earliest full-time start ~Mar 2027 after MBA. English native; Japanese J-CAT 180 (≈ JLPT N3) (limited working proficiency).",
+    "professional.label": "Professional Experience",
+    "acad.company": "Ritsumeikan Asia Pacific University",
+    "acad.dates": "Apr 2025 — Present",
+    "acad.role": "Contract · Japan",
+    "acad.b1": "Delivered university instruction under academic contract across undergraduate and graduate courses.",
+    "acad.b2": "Designed sessions and assessments that connected theory to applied cases, supporting student mastery across quantitative and organizational topics.",
+    "acad.b3": "Coordinated with faculty and program stakeholders to maintain academic standards and a consistent learning experience.",
+    "thesis.label": "Thesis (in progress)",
+    "thesis.dates": "Updating as research progresses",
+    "thesis.badge": "Work in progress",
+    "thesis.title": "Understanding Patterns of AI Engagement: Differentiating Individual Users by Engagement Depth and Usage Scope",
+    "thesis.body": "Research on how people engage with AI differently by depth versus breadth of use, developing a framework for segmenting users by engagement patterns. Marked as work-in-progress and updated as the research advances.",
+    "federal.company": "United States Federal Government (Civil Service)",
+    "federal.dates": "Jun 2022 — Feb 2025",
+    "federal.role": "Program Coordinator · Japan",
+    "federal.b1": "Reduced backlog 33% and sped response ~40% by building an enterprise automated task-tracking system that replaced fragmented manual workflows.",
+    "federal.b2": "Led a 9-person cross-functional team (finance, logistics, legal) to digitize a records backlog; cut retrieval times in half and reduced discrepancies.",
+    "federal.b3": "Saved ~$275K/year by auditing workflows across 4 departments, cutting redundancies, modernizing access controls; admin errors down ~30%.",
+    "federal.b4": "Ensured adherence to federal regulations while optimizing processes for military and civilian personnel; monitored sensitive information, assets, and personnel.",
+    "gbx.company": "GBX Consultants, Inc.",
+    "gbx.dates": "Mar 2021 — Jun 2022",
+    "gbx.role": "Senior Advisor (promoted from Associate) · Tokyo",
+    "gbx.b1": "Automated/redesigned client onboarding; onboarding time down up to 23%, processing 13%, retention +24%.",
+    "gbx.b2": "Built data-driven training and automated reporting dashboards; engagement +38%, manual reporting errors −14%.",
+    "gbx.b3": "Root-cause analysis on churn + automation recommendations; attrition −18%, ~120 staff hours/month of manual work removed.",
+    "gbx.b4": "Advised clients on financial management, resource allocation, and risk mitigation; kept project objectives on schedule and strengthened stakeholder relationships.",
+    "military.label": "Military Experience",
+    "navy.company": "United States Navy",
+    "navy.dates": "May 2012 — Mar 2016",
+    "navy.role": "Petty Officer",
+    "navy.b1": "Led/trained a 12-person technical team on sonar systems; data errors −16%; supported 4 multinational maritime security exercises.",
+    "navy.b2": "Using AN/SQQ-32(V)3 sonar, identified and classified 28 underwater contacts (submarines, surface vessels, marine life) in support of underwater-warfare operations.",
+    "navy.b3": "Standardized troubleshooting protocols and tech platforms; diagnostic time −15%, processing +22%; maintained, calibrated, and troubleshot sonar systems.",
+    "navy.b4": "Technical liaison in multinational ops; predictive maintenance cut allied response times ~20% and avoided ~$1.2M in repair costs.",
+    "awards.label": "Awards",
+    "award.military": "Military awards",
+    "award.academic": "Academic awards",
+    "award.civilian": "Civilian awards",
+    "award.m1": "Navy & Marine Corps Achievement Medal",
+    "award.m2": "Distinguished Graduate, Navy Technical School (MN A-School)",
+    "award.m3": "Enlisted Surface Warfare Specialist",
+    "award.m4": "Good Conduct Award",
+    "award.m5": "National Defense Service Medal",
+    "award.m6": "Navy and Marine Corps Overseas Service Ribbon",
+    "award.m7": "Marksmanship Medal",
+    "award.m8": "Honorable Discharge",
+    "award.c1": "Beta Gamma Sigma Honor Society",
+    "award.c2": "JASSO Scholarship",
+    "award.v1": "Small Contracting Squadron of the Year",
+    "award.v2": "Civilian of the Quarter, Civil Engineering",
+    "award.v3": "Innovation Award, GBX Consultants",
+    "education.label": "Education",
+    "edu.degrees": "Degrees",
+    "edu.teaching": "Instructional Appointments",
+    "edu.thesisSub": "Thesis",
+    "acad.coursesLabel": "Courses & instructional appointments",
+    "acad.course1": "Data Analytics",
+    "acad.course2": "Business Ethics",
+    "acad.course3": "Advanced Organizational Behavior",
+    "acad.course4": "Health Sciences",
+    "acad.course1Level": "Graduate",
+    "acad.course2Level": "Graduate",
+    "acad.course3Level": "Undergraduate",
+    "acad.course4Level": "Undergraduate",
+    "acad.course5": "Language Instructional Support",
+    "acad.course5Level": "Undergraduate",
+    "tag.undergrad": "Undergraduate",
+    "tag.grad": "Graduate",
+    "edu1.school": "Ritsumeikan Graduate School of Management",
+    "edu1.detail": "MBA, Marketing and Management · Beta Gamma Sigma Honor Society",
+    "edu1.year": "Apr 2025 — Mar 2027",
+    "edu2.school": "Ritsumeikan Asia Pacific University",
+    "edu2.detail": "BBA, Accounting and Finance",
+    "edu2.year": "Apr 2016 — Mar 2020",
+    "ai.label": "AI Training",
+    "ai.item1": "Generative AI for Business / Productivity workflows",
+    "ai.item2": "Prompt engineering for analysis & reporting",
+    "ai.item3": "Applied Python for data & automation",
+    "creds.label": "Credentials & Community",
+    "cred.1": "U.S. Department of Defense Security Clearance",
+    "cred.2": "Navy MEDIC Emergency First Aid (issued Jun 2013)",
+    "cred.3": "SRF B/A Certification (issued Jun 2013 · expires Jan 2036)",
+    "cred.4": "Tokyo 2020 Olympic Support",
+    "cred.5": "Osaka Expo 2025 Volunteer",
+    "cred.6": "Kumamoto Earthquake Relief",
+    "contact.label": "Contact",
+    "contact.title": "Let’s coordinate the next move.",
+    "contact.body": "Open to operations, program coordination, and project management roles in Japan (Tokyo or relocation). Earliest full-time start ~Mar 2027 after MBA.",
+    "contact.email": "Email",
+    "contact.linkedin": "LinkedIn",
+    "footer.text": "Nathan Newberry · Oita / Beppu, Japan · Operations & Program Coordination",
+    "mode.story": "Story",
+    "mode.full": "Full",
+    "edit.toggle": "Edit",
+    "edit.reset": "Reset",
+    "hero.email": "nathne16@gmail.com",
+    "hero.cta": "Begin the story",
+    "hero.skip": "Skip to content",
+    "hero.scroll": "Scroll"
+  },
+  "ja": {
+    "nav.mark": "Nathan Newberry",
+    "nav.about": "概要",
+    "nav.professional": "職務経歴",
+    "nav.military": "軍歴",
+    "nav.awards": "受賞",
+    "nav.education": "学歴",
+    "nav.contact": "連絡先",
+    "hero.badge": "個人サイト · 更新対応可",
+    "hero.name": "Nathan Newberry",
+    "hero.role": "オペレーション＆プログラム調整 · プロジェクト管理 · プロセス最適化 · MBA | 退役軍人",
+    "hero.pitch": "米国政府および多国籍環境での経験を持つオペレーション・プログラム調整の専門家。日本でMBA（マーケティング＆マネジメント）候補、米海軍退役軍人。業務効率化、複雑な課題解決、測定可能な成果を伴う異文化関係構築を得意とします。",
+    "hero.location": "大分／別府 · 東京・転勤歓迎",
+    "hero.linkedin": "LinkedIn",
+    "about.label": "概要",
+    "about.p1": "国際的な<strong>プログラム管理</strong>、ビジネス分析、コンサルティングの経験を持つ成果志向のプロフェッショナルです。公務員およびコンサルティングで培った構造的なプログラム調整とプロセス最適化を、複雑なステークホルダー環境に活かします。<strong>測定可能な成果</strong>を重視し、バックログ解消、サイクルタイム短縮、部門横断の実務定着に取り組みます。",
+    "about.p2": "<strong>就労資格：</strong>日本＆米国 · 日本の学生ビザは2027年5月まで · MBA修了後のフルタイム開始は最短2027年3月頃。英語ネイティブ；日本語は J-CAT 180（≈ JLPT N3）相当（限定的な業務レベル）。",
+    "professional.label": "職務経験",
+    "acad.company": "立命館アジア太平洋大学",
+    "acad.dates": "2025年4月 — 現在",
+    "acad.role": "契約 · 日本",
+    "acad.b1": "学術契約のもと、学部・大学院の授業を担当。",
+    "acad.b2": "理論と実践事例をつなぐセッションと評価を設計し、定量・組織領域での学習定着を支援。",
+    "acad.b3": "教員・プログラム関係者と連携し、学術基準と一貫した学習体験を維持。",
+    "thesis.label": "論文（進行中）",
+    "thesis.dates": "研究の進展に応じて更新中",
+    "thesis.badge": "作業中（WIP）",
+    "thesis.title": "Understanding Patterns of AI Engagement: Differentiating Individual Users by Engagement Depth and Usage Scope",
+    "thesis.body": "AIとの関わり方を「深さ」と「広さ」の違いから捉え、エンゲージメントパターンに基づくユーザー区分の枠組みを研究。進行中の研究として、進展に応じて更新しています。",
+    "federal.company": "米国連邦政府（公務員）",
+    "federal.dates": "2022年6月 — 2025年2月",
+    "federal.role": "プログラム・コーディネーター · 日本",
+    "federal.b1": "断片的な手作業を置き換える企業向け自動タスク追跡システムを構築し、バックログを33%削減、応答速度を約40%向上。",
+    "federal.b2": "財務・物流・法務からなる9名のクロスファンクショナルチームを率い、記録バックログをデジタル化；検索時間を半減し、不一致を削減。",
+    "federal.b3": "4部門のワークフロー監査で冗長を削減しアクセス制御を近代化、年間約27.5万ドルを節約；管理エラー約30%減。",
+    "federal.b4": "連邦規制への準拠を確保しつつ軍・民間双方のプロセスを最適化；機密情報・資産・人員を監視。",
+    "gbx.company": "GBX Consultants, Inc.",
+    "gbx.dates": "2021年3月 — 2022年6月",
+    "gbx.role": "シニアアドバイザー（アソシエイトから昇進） · 東京",
+    "gbx.b1": "クライアントオンボーディングを自動化・再設計；オンボーディング最大23%短縮、処理13%改善、定着率+24%。",
+    "gbx.b2": "データ駆動の研修と自動レポートダッシュボードを構築；エンゲージメント+38%、手作業レポートエラー−14%。",
+    "gbx.b3": "離反の根本原因分析と自動化提案；離職−18%、月約120人時の手作業を削減。",
+    "gbx.b4": "財務管理・資源配分・リスク軽減で助言；プロジェクト目標のスケジュール遵守とステークホルダー関係を強化。",
+    "military.label": "軍歴",
+    "navy.company": "アメリカ海軍",
+    "navy.dates": "2012年5月 — 2016年3月",
+    "navy.role": "下士官（Petty Officer）",
+    "navy.b1": "ソナー系統で12名の技術チームを指導・訓練；データエラー−16%；多国籍海上保安演習4回を支援。",
+    "navy.b2": "AN/SQQ-32(V)3ソナーを用い、水中戦作戦支援として28件の水中コンタクト（潜水艦・水上艦・海洋生物）を識別・分類。",
+    "navy.b3": "トラブルシューティング手順と技術基盤を標準化；診断時間−15%、処理+22%；ソナーの保守・校正・故障対応。",
+    "navy.b4": "多国籍作戦の技術連絡役；予知保全により同盟国の応答時間を約20%短縮、修理費用約120万ドルを回避。",
+    "awards.label": "受賞",
+    "award.military": "軍務の受賞",
+    "award.academic": "学業の受賞",
+    "award.civilian": "民間の受賞",
+    "award.m1": "海軍・海兵隊功績勲章",
+    "award.m2": "海軍技術学校（MN Aスクール）優秀卒業",
+    "award.m3": "下士官水上戦闘徽章（ESWS）",
+    "award.m4": "善行賞",
+    "award.m5": "国防従軍記章",
+    "award.m6": "海軍・海兵隊海外勤務リボン",
+    "award.m7": "射撃記章",
+    "award.m8": "名誉除隊",
+    "award.c1": "Beta Gamma Sigma 名誉学会",
+    "award.c2": "JASSO 奨学金",
+    "award.v1": "小規模契約飛行隊 年間最優秀賞",
+    "award.v2": "土木部門 民間人四半期優秀賞",
+    "award.v3": "GBXコンサルタンツ イノベーション賞",
+    "education.label": "学歴",
+    "edu.degrees": "学位",
+    "edu.teaching": "教育担当職務",
+    "edu.thesisSub": "論文",
+    "acad.coursesLabel": "担当科目・教育業務",
+    "acad.course1": "データアナリティクス",
+    "acad.course2": "ビジネス倫理",
+    "acad.course3": "上級組織行動",
+    "acad.course4": "ヘルスサイエンス",
+    "acad.course1Level": "大学院",
+    "acad.course2Level": "大学院",
+    "acad.course3Level": "学部",
+    "acad.course4Level": "学部",
+    "acad.course5": "言語教育支援",
+    "acad.course5Level": "学部",
+    "tag.undergrad": "学部",
+    "tag.grad": "大学院",
+    "edu1.school": "立命館経営大学院",
+    "edu1.detail": "MBA（マーケティング＆マネジメント） · Beta Gamma Sigma 名誉学会",
+    "edu1.year": "2025年4月 — 2027年3月",
+    "edu2.school": "立命館アジア太平洋大学",
+    "edu2.detail": "BBA（会計・ファイナンス）",
+    "edu2.year": "2016年4月 — 2020年3月",
+    "ai.label": "AI研修",
+    "ai.item1": "ビジネス／生産性ワークフロー向け生成AI",
+    "ai.item2": "分析・レポーティングのためのプロンプトエンジニアリング",
+    "ai.item3": "データ＆自動化のための応用Python",
+    "creds.label": "資格・コミュニティ",
+    "cred.1": "米国防総省セキュリティクリアランス",
+    "cred.2": "海軍 MEDIC 救急応急処置（2013年6月発行）",
+    "cred.3": "SRF B/A 認定（2013年6月発行 · 2036年1月満了）",
+    "cred.4": "東京2020オリンピック支援",
+    "cred.5": "大阪・関西万博2025 ボランティア",
+    "cred.6": "熊本地震救援活動",
+    "contact.label": "連絡先",
+    "contact.title": "次の一手を一緒に調整しましょう。",
+    "contact.body": "日本（東京または転勤可）でのオペレーション、プログラム調整、プロジェクト管理職にオープン。MBA修了後のフルタイム開始は最短2027年3月頃。",
+    "contact.email": "メール",
+    "contact.linkedin": "LinkedIn",
+    "footer.text": "Nathan Newberry · 大分／別府 · オペレーション＆プログラム調整",
+    "mode.story": "ストーリー",
+    "mode.full": "全文",
+    "edit.toggle": "編集",
+    "edit.reset": "リセット",
+    "hero.email": "nathne16@gmail.com",
+    "hero.cta": "ストーリーを始める",
+    "hero.skip": "コンテンツへスキップ",
+    "hero.scroll": "スクロール"
+  },
+  "ko": {
+    "nav.mark": "Nathan Newberry",
+    "nav.about": "소개",
+    "nav.professional": "경력",
+    "nav.military": "군 경력",
+    "nav.awards": "수상",
+    "nav.education": "학력",
+    "nav.contact": "연락처",
+    "hero.badge": "개인 사이트 · 업데이트 가능",
+    "hero.name": "Nathan Newberry",
+    "hero.role": "운영 및 프로그램 조율 · 프로젝트 관리 · 프로세스 최적화 · MBA | 예비역",
+    "hero.pitch": "미국 정부 및 다국적 경험을 갖춘 운영·프로그램 조율 전문가. 일본 MBA(마케팅·경영) 후보이자 미 해군 예비역으로, 운영 간소화, 복잡한 문제 해결, 측정 가능한 성과를 내는 교차문화 관계 구축에 능숙합니다.",
+    "hero.location": "오이타 / 벳푸, 일본 · 도쿄 / 이전 가능",
+    "hero.linkedin": "LinkedIn",
+    "about.label": "소개",
+    "about.p1": "국제적인 <strong>프로그램 관리</strong>, 비즈니스 분석, 컨설팅 경험을 갖춘 성과 지향 전문가입니다. 공무와 컨설팅에서 쌓은 구조적 프로그램 조율과 프로세스 최적화를 복잡한 이해관계자 환경에 적용합니다. 백로그 해소, 사이클 타임 단축, 교차기능 업무의 실질적 정착 등 <strong>측정 가능한 성과</strong>를 중시합니다.",
+    "about.p2": "<strong>취업 자격:</strong> 일본 &amp; 미국 · 일본 학생 비자 2027년 5월까지 · MBA 후 풀타임 시작은 빠를 경우 2027년 3월경. 영어 원어민; 일본어 J-CAT 180 (≈ JLPT N3) 수준(제한적 업무 수준).",
+    "professional.label": "전문 경력",
+    "acad.company": "리쓰메이칸 아시아태평양대학",
+    "acad.dates": "2025년 4월 — 현재",
+    "acad.role": "계약 · 일본",
+    "acad.b1": "학술 계약하에 학부·대학원 수업을 담당.",
+    "acad.b2": "이론과 적용 사례를 연결하는 세션·평가를 설계해 정량·조직 주제의 학습을 지원.",
+    "acad.b3": "교수진 및 프로그램 이해관계자와 조율하며 학술 기준과 일관된 학습 경험을 유지.",
+    "thesis.label": "논문(진행 중)",
+    "thesis.dates": "연구 진행에 따라 업데이트 중",
+    "thesis.badge": "작업 중(WIP)",
+    "thesis.title": "Understanding Patterns of AI Engagement: Differentiating Individual Users by Engagement Depth and Usage Scope",
+    "thesis.body": "사람들이 AI와 깊이·범위 측면에서 다르게 관여하는 방식을 연구하며, 관여 패턴으로 사용자를 구분하는 프레임워크를 개발. 진행 중인 연구로 진전에 따라 업데이트됩니다.",
+    "federal.company": "미국 연방정부(공무)",
+    "federal.dates": "2022년 6월 — 2025년 2월",
+    "federal.role": "프로그램 코디네이터 · 일본",
+    "federal.b1": "분절된 수작업을 대체하는 전사 자동 작업 추적 시스템을 구축해 백로그 33% 감소, 응답 속도 약 40% 향상.",
+    "federal.b2": "재무·물류·법무 9명 교차기능 팀을 이끌어 기록 백로그를 디지털화; 검색 시간 절반 단축, 불일치 감소.",
+    "federal.b3": "4개 부서 워크플로 감사로 중복을 줄이고 접근 통제를 현대화해 연간 약 $275K 절감; 관리 오류 약 30% 감소.",
+    "federal.b4": "연방 규정 준수를 확보하며 군·민간 인원 프로세스를 최적화; 민감 정보·자산·인력을 모니터링.",
+    "gbx.company": "GBX Consultants, Inc.",
+    "gbx.dates": "2021년 3월 — 2022년 6월",
+    "gbx.role": "시니어 어드바이저(어소시에이트에서 승진) · 도쿄",
+    "gbx.b1": "클라이언트 온보딩 자동화·재설계; 온보딩 최대 23%, 처리 13% 단축, 리텐션 +24%.",
+    "gbx.b2": "데이터 기반 교육과 자동 보고 대시보드 구축; 참여도 +38%, 수작업 보고 오류 −14%.",
+    "gbx.b3": "이탈 근본원인 분석 및 자동화 제안; 이직 −18%, 월 약 120인시 수작업 제거.",
+    "gbx.b4": "재무 관리·자원 배분·리스크 완화 자문; 프로젝트 목표 일정 준수와 이해관계자 관계 강화.",
+    "military.label": "군 경력",
+    "navy.company": "미합중국 해군",
+    "navy.dates": "2012년 5월 — 2016년 3월",
+    "navy.role": "하사관(Petty Officer)",
+    "navy.b1": "소나 시스템으로 12명 기술팀을 지도·훈련; 데이터 오류 −16%; 다국적 해상 안보 훈련 4회 지원.",
+    "navy.b2": "AN/SQQ-32(V)3 소나로 수중전 작전을 지원하며 수중 접촉 28건(잠수함·수상함·해양생물)을 식별·분류.",
+    "navy.b3": "트러블슈팅 프로토콜과 기술 플랫폼 표준화; 진단 시간 −15%, 처리 +22%; 소나 유지·교정·고장 대응.",
+    "navy.b4": "다국적 작전의 기술 연락관; 예지 보수로 동맹 응답 시간 약 20% 단축, 수리비 약 $1.2M 회피.",
+    "awards.label": "수상",
+    "award.military": "군 수상",
+    "award.academic": "학업 수상",
+    "award.civilian": "민간 수상",
+    "award.m1": "해군·해병대 공로 훈장",
+    "award.m2": "해군 기술학교(MN A-School) 우등 졸업",
+    "award.m3": "수상전 전문 휘장 (ESWS)",
+    "award.m4": "선행 상",
+    "award.m5": "국방 종군 기장",
+    "award.m6": "해군·해병대 해외 근무 리본",
+    "award.m7": "사격 기장",
+    "award.m8": "명예 전역",
+    "award.c1": "Beta Gamma Sigma 명예학회",
+    "award.c2": "JASSO 장학금",
+    "award.v1": "소규모 계약 비행대대 올해의 상",
+    "award.v2": "토목 분야 분기 최우수 민간인",
+    "award.v3": "GBX Consultants 혁신상",
+    "education.label": "학력",
+    "edu.degrees": "학위",
+    "edu.teaching": "교육 담당 직무",
+    "edu.thesisSub": "논문",
+    "acad.coursesLabel": "담당 과목·교육 업무",
+    "acad.course1": "데이터 분석",
+    "acad.course2": "비즈니스 윤리",
+    "acad.course3": "고급 조직행동학",
+    "acad.course4": "보건과학",
+    "acad.course1Level": "대학원",
+    "acad.course2Level": "대학원",
+    "acad.course3Level": "학부",
+    "acad.course4Level": "학부",
+    "acad.course5": "언어 교육 지원",
+    "acad.course5Level": "학부",
+    "tag.undergrad": "학부",
+    "tag.grad": "대학원",
+    "edu1.school": "리쓰메이칸 경영대학원",
+    "edu1.detail": "MBA, 마케팅 및 경영 · Beta Gamma Sigma 명예학회",
+    "edu1.year": "2025년 4월 — 2027년 3월",
+    "edu2.school": "리쓰메이칸 아시아태평양대학",
+    "edu2.detail": "BBA, 회계 및 금융",
+    "edu2.year": "2016년 4월 — 2020년 3월",
+    "ai.label": "AI 교육",
+    "ai.item1": "비즈니스 / 생산성 워크플로를 위한 생성형 AI",
+    "ai.item2": "분석 및 보고를 위한 프롬프트 엔지니어링",
+    "ai.item3": "데이터 및 자동화를 위한 응용 Python",
+    "creds.label": "자격 및 커뮤니티",
+    "cred.1": "미 국방부 보안 허가",
+    "cred.2": "해군 MEDIC 응급처치(2013년 6월 발급)",
+    "cred.3": "SRF B/A 인증(2013년 6월 발급 · 2036년 1월 만료)",
+    "cred.4": "도쿄 2020 올림픽 지원",
+    "cred.5": "오사카 엑스포 2025 자원봉사",
+    "cred.6": "구마모토 지진 구호",
+    "contact.label": "연락처",
+    "contact.title": "다음 단계를 함께 조율합시다.",
+    "contact.body": "일본(도쿄 또는 이전)의 운영, 프로그램 조율, 프로젝트 관리 역할에 열려 있습니다. MBA 후 풀타임 시작은 빠를 경우 2027년 3월경.",
+    "contact.email": "이메일",
+    "contact.linkedin": "LinkedIn",
+    "footer.text": "Nathan Newberry · 오이타 / 벳푸, 일본 · 운영 및 프로그램 조율",
+    "mode.story": "스토리",
+    "mode.full": "전체",
+    "edit.toggle": "편집",
+    "edit.reset": "초기화",
+    "hero.email": "nathne16@gmail.com",
+    "hero.cta": "스토리 시작",
+    "hero.skip": "본문으로 건너뛰기",
+    "hero.scroll": "스크롤"
+  },
+  "es": {
+    "nav.mark": "Nathan Newberry",
+    "nav.about": "Acerca de",
+    "nav.professional": "Profesional",
+    "nav.military": "Militar",
+    "nav.awards": "Premios",
+    "nav.education": "Educación",
+    "nav.contact": "Contacto",
+    "hero.badge": "Sitio personal · listo para actualizaciones",
+    "hero.name": "Nathan Newberry",
+    "hero.role": "Operaciones y coordinación de programas · Gestión de proyectos · Optimización de procesos · MBA | Veterano",
+    "hero.pitch": "Profesional de operaciones y coordinación de programas con experiencia en el gobierno de EE. UU. y entornos multinacionales. Candidato a MBA en Japón (Marketing y Gestión) y veterano de la Marina de EE. UU. — experto en agilizar operaciones, resolver problemas complejos y construir relaciones interculturales con impacto medible.",
+    "hero.location": "Oita / Beppu, Japón · abierto a Tokio / reubicación",
+    "hero.linkedin": "LinkedIn",
+    "about.label": "Acerca de",
+    "about.p1": "Profesional orientado a resultados con experiencia internacional en <strong>gestión de programas</strong>, análisis de negocio y consultoría. Aporto coordinación estructurada de programas y optimización de procesos desde el servicio civil y la consultoría a entornos complejos con múltiples partes interesadas. Me importan los <strong>resultados medibles</strong>: reducir atrasos, acortar el ciclo y hacer que el trabajo interfuncional se consolide.",
+    "about.p2": "<strong>Autorización laboral:</strong> Japón y EE. UU. · visa de estudiante en Japón hasta mayo de 2027 · inicio a tiempo completo más temprano ~mar 2027 tras el MBA. Inglés nativo; japonés J-CAT 180 (≈ JLPT N3) (competencia laboral limitada).",
+    "professional.label": "Experiencia profesional",
+    "acad.company": "Universidad Asia Pacífico de Ritsumeikan",
+    "acad.dates": "Abr 2025 — Presente",
+    "acad.role": "Contrato · Japón",
+    "acad.b1": "Impartí instrucción universitaria bajo contrato académico en cursos de grado y posgrado.",
+    "acad.b2": "Diseñé sesiones y evaluaciones que conectaron teoría con casos aplicados, apoyando el dominio estudiantil en temas cuantitativos y organizacionales.",
+    "acad.b3": "Coordiné con docentes y partes interesadas del programa para mantener estándares académicos y una experiencia de aprendizaje coherente.",
+    "thesis.label": "Tesis (en progreso)",
+    "thesis.dates": "Se actualiza conforme avanza la investigación",
+    "thesis.badge": "En progreso",
+    "thesis.title": "Understanding Patterns of AI Engagement: Differentiating Individual Users by Engagement Depth and Usage Scope",
+    "thesis.body": "Investigación sobre cómo las personas interactúan con la IA de forma distinta según la profundidad frente a la amplitud de uso, desarrollando un marco para segmentar usuarios por patrones de engagement. Trabajo en progreso, actualizado a medida que avanza la investigación.",
+    "federal.company": "Gobierno federal de Estados Unidos (servicio civil)",
+    "federal.dates": "Jun 2022 — Feb 2025",
+    "federal.role": "Coordinador de programas · Japón",
+    "federal.b1": "Reduje el atraso un 33% y aceleré la respuesta ~40% al crear un sistema empresarial de seguimiento de tareas automatizado que reemplazó flujos manuales fragmentados.",
+    "federal.b2": "Lideré un equipo interfuncional de 9 personas (finanzas, logística, legal) para digitalizar un atraso de registros; reduje a la mitad los tiempos de recuperación y disminuí discrepancias.",
+    "federal.b3": "Ahorré ~$275K/año auditando flujos en 4 departamentos, eliminando redundancias y modernizando controles de acceso; errores administrativos ~30% menos.",
+    "federal.b4": "Garanticé el cumplimiento de normativas federales al optimizar procesos para personal militar y civil; monitoreé información sensible, activos y personal.",
+    "gbx.company": "GBX Consultants, Inc.",
+    "gbx.dates": "Mar 2021 — Jun 2022",
+    "gbx.role": "Asesor sénior (ascendido desde Asociado) · Tokio",
+    "gbx.b1": "Automaticé/rediseñé la incorporación de clientes; tiempo de onboarding hasta −23%, procesamiento −13%, retención +24%.",
+    "gbx.b2": "Creé formación basada en datos y paneles de reporting automatizados; engagement +38%, errores de reporting manual −14%.",
+    "gbx.b3": "Análisis de causa raíz de la rotación + recomendaciones de automatización; atrición −18%, ~120 horas-persona/mes de trabajo manual eliminadas.",
+    "gbx.b4": "Asesoré a clientes en gestión financiera, asignación de recursos y mitigación de riesgos; mantuve objetivos a tiempo y fortalecí relaciones con stakeholders.",
+    "military.label": "Experiencia militar",
+    "navy.company": "Marina de los Estados Unidos",
+    "navy.dates": "May 2012 — Mar 2016",
+    "navy.role": "Petty Officer",
+    "navy.b1": "Lideré/formé un equipo técnico de 12 personas en sistemas de sonar; errores de datos −16%; apoyé 4 ejercicios multinacionales de seguridad marítima.",
+    "navy.b2": "Con sonar AN/SQQ-32(V)3, identifiqué y clasifiqué 28 contactos submarinos (submarinos, buques de superficie, vida marina) en apoyo a operaciones de guerra submarina.",
+    "navy.b3": "Estandaricé protocolos de resolución de fallos y plataformas técnicas; tiempo de diagnóstico −15%, procesamiento +22%; mantuve, calibré y resolví fallos en sistemas de sonar.",
+    "navy.b4": "Enlace técnico en operaciones multinacionales; el mantenimiento predictivo redujo tiempos de respuesta aliados ~20% y evitó ~$1.2M en costos de reparación.",
+    "awards.label": "Premios",
+    "award.military": "Premios militares",
+    "award.academic": "Premios académicos",
+    "award.civilian": "Premios civiles",
+    "award.m1": "Medalla de Logro de la Marina y el Cuerpo de Marines",
+    "award.m2": "Graduado distinguido, Escuela Técnica de la Marina (MN A-School)",
+    "award.m3": "Insignia de especialista en guerra de superficie (ESWS)",
+    "award.m4": "Premio de buena conducta",
+    "award.m5": "Medalla de Servicio de Defensa Nacional",
+    "award.m6": "Cinta de servicio en el extranjero de la Marina y el Cuerpo de Marines",
+    "award.m7": "Medalla de puntería",
+    "award.m8": "Licenciamiento honorable",
+    "award.c1": "Sociedad de Honor Beta Gamma Sigma",
+    "award.c2": "Beca JASSO",
+    "award.v1": "Escuadrón pequeño de contratación del año",
+    "award.v2": "Civil del trimestre, Ingeniería civil",
+    "award.v3": "Premio a la innovación, GBX Consultants",
+    "education.label": "Educación",
+    "edu.degrees": "Títulos",
+    "edu.teaching": "Nombramientos de instrucción",
+    "edu.thesisSub": "Tesis",
+    "acad.coursesLabel": "Cursos y nombramientos de instrucción",
+    "acad.course1": "Análisis de datos",
+    "acad.course2": "Ética empresarial",
+    "acad.course3": "Comportamiento organizacional avanzado",
+    "acad.course4": "Ciencias de la Salud",
+    "acad.course1Level": "Posgrado",
+    "acad.course2Level": "Posgrado",
+    "acad.course3Level": "Grado",
+    "acad.course4Level": "Grado",
+    "acad.course5": "Apoyo a la enseñanza de idiomas",
+    "acad.course5Level": "Grado",
+    "tag.undergrad": "Grado",
+    "tag.grad": "Posgrado",
+    "edu1.school": "Escuela de Posgrado en Gestión de Ritsumeikan",
+    "edu1.detail": "MBA, Marketing y Gestión · Sociedad de Honor Beta Gamma Sigma",
+    "edu1.year": "Abr 2025 — Mar 2027",
+    "edu2.school": "Universidad Asia Pacífico de Ritsumeikan",
+    "edu2.detail": "BBA, Contabilidad y Finanzas",
+    "edu2.year": "Abr 2016 — Mar 2020",
+    "ai.label": "Formación en IA",
+    "ai.item1": "IA generativa para negocios / flujos de productividad",
+    "ai.item2": "Ingeniería de prompts para análisis e informes",
+    "ai.item3": "Python aplicado a datos y automatización",
+    "creds.label": "Credenciales y comunidad",
+    "cred.1": "Autorización de seguridad del Departamento de Defensa de EE. UU.",
+    "cred.2": "Primeros auxilios de emergencia Navy MEDIC (emitido jun 2013)",
+    "cred.3": "Certificación SRF B/A (emitida jun 2013 · vence ene 2036)",
+    "cred.4": "Apoyo a los Juegos Olímpicos Tokio 2020",
+    "cred.5": "Voluntario Expo Osaka 2025",
+    "cred.6": "Ayuda tras el terremoto de Kumamoto",
+    "contact.label": "Contacto",
+    "contact.title": "Coordinemos el próximo paso.",
+    "contact.body": "Abierto a roles de operaciones, coordinación de programas y gestión de proyectos en Japón (Tokio o reubicación). Inicio a tiempo completo más temprano ~mar 2027 tras el MBA.",
+    "contact.email": "Correo",
+    "contact.linkedin": "LinkedIn",
+    "footer.text": "Nathan Newberry · Oita / Beppu, Japón · Operaciones y coordinación de programas",
+    "mode.story": "Historia",
+    "mode.full": "Completo",
+    "edit.toggle": "Editar",
+    "edit.reset": "Restablecer",
+    "hero.email": "nathne16@gmail.com",
+    "hero.cta": "Empezar la historia",
+    "hero.skip": "Saltar al contenido",
+    "hero.scroll": "Desplazar"
+  }
+};
+
+      var currentLang = "en";
+      var EDIT_STORE = "resume-edits";
+      var edits = {};
+      try {
+        var storedEdits = localStorage.getItem(EDIT_STORE);
+        if (storedEdits) edits = JSON.parse(storedEdits) || {};
+      } catch (e) { edits = {}; }
+
+      var CHROME_KEYS = {
+        "nav.about": 1,
+        "nav.professional": 1,
+        "nav.military": 1,
+        "nav.awards": 1,
+        "nav.education": 1,
+        "nav.contact": 1,
+        "mode.story": 1,
+        "mode.full": 1,
+        "edit.toggle": 1,
+        "edit.reset": 1,
+        "hero.cta": 1,
+        "hero.skip": 1,
+        "hero.scroll": 1
+      };
+
+      function i18nKey(el) {
+        return el.getAttribute("data-i18n-html") || el.getAttribute("data-i18n");
+      }
+      function isHtmlField(el) {
+        return el.hasAttribute("data-i18n-html");
+      }
+      function isEditableField(el) {
+        var key = i18nKey(el);
+        return !!key && !CHROME_KEYS[key];
+      }
+      function persistEdits() {
+        try { localStorage.setItem(EDIT_STORE, JSON.stringify(edits)); } catch (e) {}
+      }
+      function fieldValue(el) {
+        if (isHtmlField(el)) return el.innerHTML.trim();
+        return el.textContent.replace(/\u00a0/g, " ").replace(/\s+/g, " ").trim();
+      }
+      function writeField(el, value) {
+        if (isHtmlField(el)) el.innerHTML = value;
+        else el.textContent = value;
+      }
+      function syncEditableLink(el) {
+        if (!el || el.tagName !== "A") return;
+        var key = i18nKey(el);
+        var text = (el.textContent || "").trim();
+        if ((key === "contact.email" || key === "hero.email") && text.indexOf("@") !== -1) {
+          el.setAttribute("href", "mailto:" + text.replace(/\s+/g, ""));
+        }
+      }
+      function captureEdits() {
+        var lang = currentLang;
+        var pack = I18N[lang] || I18N.en;
+        if (!edits[lang]) edits[lang] = {};
+        document.querySelectorAll(".is-editable").forEach(function (el) {
+          var key = i18nKey(el);
+          if (!key) return;
+          var val = fieldValue(el);
+          if (val === pack[key]) delete edits[lang][key];
+          else edits[lang][key] = val;
+          syncEditableLink(el);
+        });
+        if (edits[lang] && !Object.keys(edits[lang]).length) delete edits[lang];
+        persistEdits();
+      }
+
+      function setLang(lang) {
+        if (document.body.classList.contains("is-editing")) captureEdits();
+        var pack = I18N[lang] || I18N.en;
+        currentLang = I18N[lang] ? lang : "en";
+        document.documentElement.lang =
+          currentLang === "ja" ? "ja" : currentLang === "ko" ? "ko" : currentLang === "es" ? "es" : "en";
+
+        document.querySelectorAll("[data-i18n]").forEach(function (el) {
+          var key = el.getAttribute("data-i18n");
+          if (pack[key] != null && document.activeElement !== el) el.textContent = pack[key];
+        });
+        document.querySelectorAll("[data-i18n-html]").forEach(function (el) {
+          var key = el.getAttribute("data-i18n-html");
+          if (pack[key] != null && document.activeElement !== el) el.innerHTML = pack[key];
+        });
+        var over = edits[currentLang];
+        if (!over || typeof over !== "object") over = {};
+        Object.keys(over).forEach(function (key) {
+          document.querySelectorAll('[data-i18n="' + key + '"], [data-i18n-html="' + key + '"]').forEach(function (el) {
+            if (document.activeElement === el) return;
+            writeField(el, over[key]);
+            syncEditableLink(el);
+          });
+        });
+
+        document.querySelectorAll(".lang-btn").forEach(function (btn) {
+          var active = btn.getAttribute("data-lang") === lang;
+          btn.classList.toggle("active", active);
+          btn.setAttribute("aria-pressed", active ? "true" : "false");
+        });
+
+        try { localStorage.setItem("resume-lang", lang); } catch (e) {}
+      }
+
+      document.querySelectorAll(".lang-btn").forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          setLang(btn.getAttribute("data-lang"));
+        });
+      });
+
+      var initial = "en";
+      try {
+        var saved = localStorage.getItem("resume-lang");
+        if (saved && I18N[saved]) initial = saved;
+      } catch (e) {}
+      setLang(initial);
+
+      /* ——— Mode: Story vs Full ——— */
+      var body = document.body;
+
+      /* ——— Roadmap step highlight (story mode) ——— */
+      var stepSections = Array.prototype.slice.call(document.querySelectorAll(".story-section[data-step]"));
+      var stepRaf = 0;
+      function updateRoadmapSteps() {
+        stepRaf = 0;
+        if (!body.classList.contains("mode-story") || !stepSections.length) {
+          stepSections.forEach(function (s) {
+            s.classList.remove("is-active", "is-passed");
+          });
+          return;
+        }
+        var mid = window.innerHeight * 0.42;
+        var activeIdx = 0;
+        stepSections.forEach(function (s, i) {
+          var r = s.getBoundingClientRect();
+          if (r.top <= mid) activeIdx = i;
+        });
+        stepSections.forEach(function (s, i) {
+          s.classList.toggle("is-active", i === activeIdx);
+          s.classList.toggle("is-passed", i < activeIdx);
+        });
+      }
+      function queueRoadmap() {
+        if (!stepRaf) stepRaf = requestAnimationFrame(updateRoadmapSteps);
+      }
+      window.addEventListener("scroll", queueRoadmap, { passive: true });
+      window.addEventListener("resize", queueRoadmap, { passive: true });
+
+      var io = null;
+      function setMode(mode) {
+        var next = mode === "full" ? "full" : "story";
+        body.classList.remove("mode-story", "mode-full");
+        body.classList.add("mode-" + next);
+        document.querySelectorAll(".mode-btn").forEach(function (btn) {
+          var active = btn.getAttribute("data-mode") === next;
+          btn.classList.toggle("active", active);
+          btn.setAttribute("aria-pressed", active ? "true" : "false");
+        });
+        try { localStorage.setItem("resume-mode", next); } catch (e) {}
+        if (next === "story" && !reduceMotion) {
+          refreshReveals();
+          queueRoadmap();
+        } else if (next === "full") {
+          document.querySelectorAll(".reveal").forEach(function (el) {
+            el.classList.add("is-in");
+          });
+          if (io) { io.disconnect(); io = null; }
+          tx = 0; ty = 0; queueParallax();
+          clearTilt();
+          queueRoadmap();
+        } else {
+          queueRoadmap();
+        }
+      }
+
+      document.querySelectorAll(".mode-btn").forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          setMode(btn.getAttribute("data-mode"));
+        });
+      });
+
+      var initialMode = "story";
+      try {
+        var savedMode = localStorage.getItem("resume-mode");
+        if (savedMode === "full" || savedMode === "story") initialMode = savedMode;
+      } catch (e) {}
+      setMode(initialMode);
+
+      /* Skip → force Full for calm reading, then jump */
+      var skip = document.getElementById("skip-to-content");
+      if (skip) {
+        skip.addEventListener("click", function (e) {
+          e.preventDefault();
+          setMode("full");
+          var target = document.getElementById("about");
+          if (target) target.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth" });
+        });
+      }
+
+      /* ——— IntersectionObserver reveals ——— */
+      function refreshReveals() {
+        if (reduceMotion || !body.classList.contains("mode-story")) {
+          document.querySelectorAll(".reveal").forEach(function (el) {
+            el.classList.add("is-in");
+          });
+          if (io) { io.disconnect(); io = null; }
+          return;
+        }
+        if (io) io.disconnect();
+        io = new IntersectionObserver(
+          function (entries) {
+            entries.forEach(function (entry) {
+              if (entry.isIntersecting) {
+                entry.target.classList.add("is-in");
+                io.unobserve(entry.target);
+              }
+            });
+          },
+          {
+            root: null,
+            /* Trigger a bit early for smoother feel; leave floor so items aren't mid-viewport already visible */
+            rootMargin: "0px 0px -12% 0px",
+            threshold: [0, 0.08, 0.18]
+          }
+        );
+        document.querySelectorAll(".reveal:not(.is-in)").forEach(function (el) {
+          io.observe(el);
+        });
+        /* Hero is above fold — keep is-in (CSS keyframes handle entrance) */
+        document.querySelectorAll(".landing .reveal").forEach(function (el) {
+          el.classList.add("is-in");
+          if (io) io.unobserve(el);
+        });
+        /* Catch anything already in view after mode switch / layout */
+        requestAnimationFrame(function () {
+          document.querySelectorAll(".reveal:not(.is-in)").forEach(function (el) {
+            var r = el.getBoundingClientRect();
+            var vh = window.innerHeight || 0;
+            if (r.top < vh * 0.88 && r.bottom > vh * 0.08) {
+              el.classList.add("is-in");
+              if (io) io.unobserve(el);
+            }
+          });
+        });
+      }
+
+      if ("IntersectionObserver" in window) {
+        refreshReveals();
+      } else {
+        document.querySelectorAll(".reveal").forEach(function (el) {
+          el.classList.add("is-in");
+        });
+      }
+      queueRoadmap();
+
+      function onReduceChange(e) {
+        reduceMotion = e.matches;
+        refreshReveals();
+        tx = 0; ty = 0; clearTilt(); queueParallax();
+      }
+      if (mqReduce.addEventListener) mqReduce.addEventListener("change", onReduceChange);
+      else if (mqReduce.addListener) mqReduce.addListener(onReduceChange);
+
+      /* ——— On-screen edit ——— */
+      var editToggle = document.getElementById("edit-toggle");
+      var editReset = document.getElementById("edit-reset");
+      var captureTimer = 0;
+
+      function scheduleCapture() {
+        if (captureTimer) clearTimeout(captureTimer);
+        captureTimer = setTimeout(captureEdits, 120);
+      }
+
+      function setEditing(on) {
+        if (!on && document.body.classList.contains("is-editing")) captureEdits();
+        document.body.classList.toggle("is-editing", on);
+        document.querySelectorAll("[data-i18n], [data-i18n-html]").forEach(function (el) {
+          if (!isEditableField(el)) return;
+          el.classList.toggle("is-editable", on);
+          if (on) {
+            el.setAttribute("contenteditable", "true");
+            el.setAttribute("spellcheck", "true");
+          } else {
+            el.removeAttribute("contenteditable");
+            el.removeAttribute("spellcheck");
+          }
+        });
+        if (editToggle) {
+          editToggle.classList.toggle("active", on);
+          editToggle.setAttribute("aria-pressed", on ? "true" : "false");
+        }
+        if (editReset) {
+          if (on) editReset.removeAttribute("hidden");
+          else editReset.setAttribute("hidden", "");
+        }
+      }
+
+      if (editToggle) {
+        editToggle.addEventListener("click", function () {
+          setEditing(!document.body.classList.contains("is-editing"));
+        });
+      }
+      if (editReset) {
+        editReset.addEventListener("click", function () {
+          if (captureTimer) { clearTimeout(captureTimer); captureTimer = 0; }
+          edits = {};
+          persistEdits();
+          var lang = currentLang;
+          document.body.classList.remove("is-editing");
+          setLang(lang);
+          setEditing(true);
+        });
+      }
+
+      document.addEventListener("input", function (e) {
+        var el = e.target;
+        if (!el || !el.classList || !el.classList.contains("is-editable")) return;
+        syncEditableLink(el);
+        scheduleCapture();
+      });
+      document.addEventListener("blur", function (e) {
+        var el = e.target;
+        if (!el || !el.classList || !el.classList.contains("is-editable")) return;
+        captureEdits();
+      }, true);
+      document.addEventListener("click", function (e) {
+        if (!document.body.classList.contains("is-editing")) return;
+        var a = e.target && e.target.closest ? e.target.closest("a.is-editable") : null;
+        if (a) e.preventDefault();
+      }, true);
+      document.addEventListener("paste", function (e) {
+        var el = e.target;
+        if (!el || !el.classList || !el.classList.contains("is-editable")) return;
+        if (isHtmlField(el)) return;
+        e.preventDefault();
+        var clip = e.clipboardData || window.clipboardData;
+        var plain = clip ? clip.getData("text/plain") : "";
+        if (!plain) return;
+        plain = plain.replace(/\r\n|\r|\n/g, " ");
+        if (document.queryCommandSupported && document.queryCommandSupported("insertText")) {
+          document.execCommand("insertText", false, plain);
+        } else {
+          el.textContent = plain;
+        }
+        syncEditableLink(el);
+        scheduleCapture();
+      });
+    })();
+  </script>
+</body>
+</html>
