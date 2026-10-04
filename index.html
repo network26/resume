@@ -8,7 +8,7 @@
   <meta name="description" content="Nathan Newberry — Operations &amp; Program Coordination, Project Management, Process Optimization. Based in Oita/Beppu, Japan." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,500;8..60,600;8..60,700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+Arabic:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,500;8..60,600;8..60,700&display=swap" rel="stylesheet" />
   <style>
     :root {
       --bg: #10161c;
@@ -31,9 +31,9 @@
       --radius: 12px;
       --max: 740px;
       --nav-h: 3.5rem;
-      --font-sans: "Inter", "Hiragino Sans", "Noto Sans JP", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", system-ui, sans-serif;
+      --font-sans: "Inter", "Noto Sans Arabic", "Hiragino Sans", "Noto Sans JP", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", system-ui, sans-serif;
       --font-mono: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
-      --font-display: "Source Serif 4", "Iowan Old Style", Georgia, serif;
+      --font-display: "Source Serif 4", "Noto Sans Arabic", "Iowan Old Style", Georgia, serif;
       --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
       --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
       --ease-spring: cubic-bezier(0.22, 1, 0.36, 1);
@@ -1094,6 +1094,51 @@
         will-change: auto;
       }
     }
+
+    /* Arabic only: mirror reading order and start-side rules. LTR languages unchanged. */
+    html[dir="rtl"] .lang-btn,
+    html[dir="rtl"] .mode-btn {
+      border-right: none;
+      border-left: 1px solid var(--border);
+      letter-spacing: 0;
+    }
+    html[dir="rtl"] .lang-btn:last-child,
+    html[dir="rtl"] .mode-btn:last-child { border-left: none; }
+    html[dir="rtl"] .nav-links a,
+    html[dir="rtl"] .section-label,
+    html[dir="rtl"] .courses-label { letter-spacing: 0; }
+    html[dir="rtl"] .nav-links a::after { left: auto; right: 0; }
+    html[dir="rtl"] .card li {
+      padding-left: 0;
+      padding-right: 1rem;
+    }
+    html[dir="rtl"] .card li::before { left: auto; right: 0; }
+    html[dir="rtl"] .card::before { left: auto; right: 0; }
+    html[dir="rtl"] .edu-item {
+      border-left-width: 1px;
+      border-left-color: var(--border);
+      border-right: 2px solid var(--accent-2);
+    }
+    html[dir="rtl"] .award-item {
+      border-left: 1px solid var(--border);
+      border-right: 2px solid rgba(196, 165, 116, 0.55);
+    }
+    html[dir="rtl"] .card-dates { white-space: normal; }
+    html[dir="rtl"] [data-i18n="hero.email"] {
+      direction: ltr;
+      unicode-bidi: isolate;
+    }
+    html[dir="rtl"] body.mode-story .shell::before { left: auto; right: 0.35rem; }
+    html[dir="rtl"] body.mode-story .story-section::before { left: auto; right: -0.05rem; }
+    @media (min-width: 900px) {
+      html[dir="rtl"] body.mode-story .shell {
+        padding-left: 1.5rem;
+        padding-right: 4.25rem;
+      }
+      html[dir="rtl"] body.mode-story .shell::before { right: 1.55rem; }
+      html[dir="rtl"] body.mode-story .story-section::before { right: -2.78rem; }
+    }
+
   </style>
 </head>
 <body class="mode-full" id="top">
@@ -1117,6 +1162,7 @@
           <button type="button" class="lang-btn" data-lang="ja" aria-pressed="false" lang="ja">日本語</button>
           <button type="button" class="lang-btn" data-lang="ko" aria-pressed="false" lang="ko">한국어</button>
           <button type="button" class="lang-btn" data-lang="es" aria-pressed="false">ES</button>
+          <button type="button" class="lang-btn" data-lang="ar" aria-pressed="false" lang="ar">العربية</button>
         </div>
       </div>
     </nav>
@@ -1982,6 +2028,135 @@
     "hero.cta": "Empezar la historia",
     "hero.skip": "Saltar al contenido",
     "hero.scroll": "Desplazar"
+  },
+  "ar": {
+    "nav.mark": "Nathan Newberry",
+    "nav.about": "نبذة",
+    "nav.professional": "مهني",
+    "nav.military": "عسكري",
+    "nav.awards": "جوائز",
+    "nav.education": "التعليم",
+    "nav.credentials": "المؤهلات",
+    "nav.volunteering": "التطوع",
+    "nav.contact": "تواصل",
+    "hero.badge": "موقع شخصي · جاهز للتحديثات",
+    "hero.name": "Nathan Newberry",
+    "hero.role": "العمليات وتنسيق البرامج · إدارة المشاريع · تحسين العمليات · \u200EMBA\u200E | مخضرم",
+    "hero.pitch": "محترف في العمليات وتنسيق البرامج، بخبرة في حكومة الولايات المتحدة وبيئات متعددة الجنسيات. مرشح لماجستير إدارة الأعمال في اليابان (التسويق والإدارة) ومخضرم في البحرية الأمريكية، ماهر في تبسيط العمليات وحل المشكلات المعقدة وبناء علاقات عابرة للثقافات ذات أثر قابل للقياس.",
+    "hero.location": "مقيم في أويتا/بيبو، اليابان. منفتح على الانتقال إلى أي مكان في اليابان وحول العالم.",
+    "hero.linkedin": "LinkedIn",
+    "about.label": "نبذة",
+    "about.p1": "محترف يركز على النتائج، بخبرة دولية في <strong>إدارة البرامج</strong> وتحليل الأعمال والاستشارات. أنقل تنسيق البرامج المنظم وتحسين العمليات من الخدمة المدنية والاستشارات إلى بيئات معقدة متعددة أصحاب المصلحة. أهتم بـ<strong>النتائج القابلة للقياس</strong>: إنهاء الأعمال المتراكمة، وتقصير زمن الدورة، وجعل العمل بين الوظائف يترسخ فعلًا.",
+    "about.p2": "<strong>تصريح العمل:</strong> اليابان والولايات المتحدة. تأشيرة طالب في اليابان حتى مايو 2027. أقرب بدء للعمل بدوام كامل في مارس 2027 بعد ماجستير إدارة الأعمال. الإنجليزية لغة أم. اليابانية: \u200EJ-CAT 180\u200E (تقريبًا \u200EJLPT N3\u200E)، وكفاءة عملية محدودة.",
+    "professional.label": "الخبرة المهنية",
+    "acad.company": "جامعة ريتسوميكان آسيا باسيفيك، اليابان",
+    "acad.dates": "أبريل 2025 — حتى الآن",
+    "acad.role": "عقد · اليابان",
+    "acad.b1": "قدّمت تعليمًا جامعيًا بموجب عقد أكاديمي عبر مقررات البكالوريوس والدراسات العليا.",
+    "acad.b2": "صمّمت جلسات وتقييمات ربطت النظرية بحالات تطبيقية، ودعمت إتقان الطلاب للموضوعات الكمية والتنظيمية.",
+    "acad.b3": "نسّقت مع أعضاء هيئة التدريس وأصحاب المصلحة في البرنامج للحفاظ على المعايير الأكاديمية وعلى تجربة تعلم متسقة.",
+    "thesis.label": "الأطروحة",
+    "thesis.dates": "",
+    "thesis.badge": "",
+    "thesis.title": "Understanding Patterns of AI Engagement: Differentiating Individual Users by Engagement Depth and Usage Scope",
+    "thesis.body": "بحث في كيفية اختلاف انخراط الناس مع الذكاء الاصطناعي بحسب عمق الانخراط مقابل اتساع الاستخدام، وإطار لتقسيم المستخدمين وفق تلك الأنماط.",
+    "federal.company": "الحكومة الفيدرالية للولايات المتحدة (الخدمة المدنية)",
+    "federal.dates": "يونيو 2022 — فبراير 2025",
+    "federal.role": "منسق برامج · اليابان",
+    "federal.b1": "خفّضت الأعمال المتراكمة بنسبة 33 في المئة وعجّلت زمن الاستجابة بنسبة 40 في المئة، ببناء نظام مؤسسي آلي لتتبع المهام حل محل سير العمل اليدوي المجزأ.",
+    "federal.b2": "قُدت فريقًا متعدد الوظائف من 9 أشخاص في المالية واللوجستيات والشؤون القانونية لرقمنة تراكم السجلات، مما خفض أوقات الاسترجاع إلى النصف وقلّل التباينات.",
+    "federal.b3": "وفّرت 275,000 دولار سنويًا بتدقيق سير العمل عبر 4 أقسام، وخفض التكرار، وتحديث ضوابط الوصول، كما خفّضت الأخطاء الإدارية بنسبة 30 في المئة.",
+    "federal.b4": "ضمنت الالتزام باللوائح الفيدرالية مع تحسين العمليات للعسكريين والمدنيين، وراقبت المعلومات الحساسة والأصول والأفراد.",
+    "gbx.company": "GBX Consultants, Inc.",
+    "gbx.dates": "مارس 2021 — يونيو 2022",
+    "gbx.role": "مستشار أول (تُرقّيت من المعاون) · طوكيو",
+    "gbx.b1": "أتممت وأعدت تصميم تهيئة العملاء الجدد، مما خفّض زمن التهيئة بما يصل إلى 23 في المئة، وخفّض زمن المعالجة بنسبة 13 في المئة، ورفع الاحتفاظ بالعملاء بنسبة 24 في المئة.",
+    "gbx.b2": "بنيت تدريبًا قائمًا على البيانات ولوحات تقارير آلية، مما رفع المشاركة بنسبة 38 في المئة وخفّض أخطاء التقارير اليدوية بنسبة 14 في المئة.",
+    "gbx.b3": "حللت الأسباب الجذرية لمغادرة العملاء وأوصيت بالأتمتة، مما خفّض المغادرة بنسبة 18 في المئة وأزال 120 ساعة من العمل اليدوي للموظفين كل شهر.",
+    "gbx.b4": "قدّمت المشورة للعملاء في الإدارة المالية وتخصيص الموارد وتخفيف المخاطر، وأبقيت أهداف المشاريع ضمن الجدول، وعزّزت علاقات أصحاب المصلحة.",
+    "military.label": "الخبرة العسكرية",
+    "navy.company": "البحرية الأمريكية",
+    "navy.dates": "مايو 2012 — مارس 2016",
+    "navy.role": "ضابط صف",
+    "navy.b1": "قُدت ودرّبت فريقًا تقنيًا من 12 شخصًا على أنظمة السونار، وخفّضت أخطاء البيانات بنسبة 16 في المئة، ودعمت 4 تمارين متعددة الجنسيات لأمن البحار.",
+    "navy.b2": "باستخدام سونار \u200EAN/SQQ-32(V)3\u200E، حددت وصنّفت 28 كشفًا تحت الماء، منها غواصات وسفن سطحية وأحياء بحرية، دعمًا لعمليات الحرب تحت الماء.",
+    "navy.b3": "وحّدت بروتوكولات استكشاف الأعطال والمنصات التقنية، مما خفّض زمن التشخيص بنسبة 15 في المئة وزاد المعالجة بنسبة 22 في المئة. كما صنت أنظمة السونار وعايرتها وعالجت أعطالها.",
+    "navy.b4": "خدمت ضابط ارتباط تقنيًا في عمليات متعددة الجنسيات. خفّضت الصيانة التنبؤية أزمنة استجابة الحلفاء بنسبة 20 في المئة وتجنّبت مليون ومئتي ألف دولار من تكاليف الإصلاح.",
+    "awards.label": "الجوائز",
+    "award.military": "جوائز عسكرية",
+    "award.academic": "جوائز أكاديمية",
+    "award.civilian": "جوائز مدنية",
+    "award.m1": "وسام الإنجاز للبحرية ومشاة البحرية",
+    "award.m2": "خريج متميز، المدرسة التقنية للبحرية (\u200EMN A-School\u200E)",
+    "award.m3": "اختصاصي حرب السطح من صفوف المجندين (\u200EESWS\u200E)",
+    "award.m4": "جائزة حسن السلوك",
+    "award.m5": "وسام خدمة الدفاع الوطني",
+    "award.m6": "شريط الخدمة الخارجية للبحرية ومشاة البحرية",
+    "award.m7": "وسام الرماية",
+    "award.m8": "تسريح مشرف",
+    "award.c1": "جمعية الشرف بيتا غاما سيغما",
+    "award.c2": "منحة \u200EJASSO\u200E",
+    "award.v1": "سرب التعاقد الصغير للعام",
+    "award.v2": "مدني الربع، الهندسة المدنية",
+    "award.v3": "جائزة الابتكار، \u200EGBX Consultants\u200E",
+    "education.label": "التعليم",
+    "edu.degrees": "الدرجات العلمية",
+    "edu.teaching": "التعيينات التدريسية",
+    "edu.thesisSub": "الأطروحة",
+    "acad.coursesLabel": "المقررات والتعيينات التدريسية",
+    "acad.course1": "تحليلات البيانات",
+    "acad.course2": "أخلاقيات الأعمال",
+    "acad.course3": "السلوك التنظيمي المتقدم",
+    "acad.course4": "العلوم الصحية",
+    "acad.course1Level": "دراسات عليا",
+    "acad.course2Level": "دراسات عليا",
+    "acad.course3Level": "بكالوريوس",
+    "acad.course4Level": "بكالوريوس",
+    "acad.course5": "دعم تدريس اللغات",
+    "acad.course5Level": "بكالوريوس",
+    "tag.undergrad": "بكالوريوس",
+    "tag.grad": "دراسات عليا",
+    "edu1.school": "كلية الدراسات العليا للإدارة في ريتسوميكان، اليابان",
+    "edu1.detail": "ماجستير إدارة الأعمال (\u200EMBA\u200E)",
+    "edu1.major": "التسويق والإدارة",
+    "edu1.honor": "جمعية الشرف بيتا غاما سيغما",
+    "edu1.year": "أبريل 2025 — مارس 2027",
+    "eduMd.school": "جامعة ماريلاند، الولايات المتحدة",
+    "eduMd.detail": "ماجستير إدارة الأعمال (\u200EMBA\u200E)",
+    "eduMd.honor": "قائمة العميد",
+    "eduMd.year": "سبتمبر 2024 — سبتمبر 2025",
+    "edu2.school": "جامعة ريتسوميكان آسيا باسيفيك، اليابان",
+    "edu2.detail": "بكالوريوس إدارة الأعمال (\u200EBBA\u200E)",
+    "edu2.major": "المحاسبة والمالية",
+    "edu2.year": "أبريل 2016 — مارس 2020",
+    "ai.label": "تدريب الذكاء الاصطناعي",
+    "ai.item1": "الذكاء الاصطناعي التوليدي لسير عمل الأعمال/الإنتاجية",
+    "ai.item2": "هندسة الأوامر للتحليل والتقارير",
+    "ai.item3": "بايثون التطبيقي للبيانات والأتمتة",
+    "creds.label": "المؤهلات",
+    "vol.label": "التطوع",
+    "cred.1": "تصريح أمني من وزارة الدفاع الأمريكية",
+    "cred.2": "الإسعافات الأولية الطارئة \u200EMEDIC\u200E للبحرية",
+    "cred.3": "شهادة \u200ESRF B/A\u200E",
+    "cred.7": "الحزام الأصفر للين ستة سيغما",
+    "cred.4": "دعم أولمبياد طوكيو 2020",
+    "cred.5": "متطوع إكسبو أوساكا 2025",
+    "cred.6": "إغاثة زلزال كوماموتو",
+    "contact.label": "تواصل",
+    "contact.title": "لننسّق الخطوة التالية.",
+    "contact.body": "منفتح على وظائف في أي مكان حول العالم. تصريح عمل لليابان والولايات المتحدة. مقيم في أويتا/بيبو، ومنفتح على الانتقال. أقرب بدء للعمل بدوام كامل في مارس 2027.",
+    "contact.email": "البريد",
+    "contact.linkedin": "LinkedIn",
+    "contact.download": "تنزيل السيرة",
+    "footer.text": "Nathan Newberry · أويتا/بيبو، اليابان · العمليات وتنسيق البرامج",
+    "mode.story": "قصة",
+    "mode.full": "كامل",
+    "edit.toggle": "تحرير",
+    "edit.reset": "إعادة",
+    "hero.email": "nathne16@gmail.com",
+    "hero.cta": "ابدأ القصة",
+    "hero.skip": "تخطَّ إلى المحتوى",
+    "hero.scroll": "مرّر"
   }
 };
 
@@ -2060,8 +2235,8 @@
         if (document.body.classList.contains("is-editing")) captureEdits();
         var pack = I18N[lang] || I18N.en;
         currentLang = I18N[lang] ? lang : "en";
-        document.documentElement.lang =
-          currentLang === "ja" ? "ja" : currentLang === "ko" ? "ko" : currentLang === "es" ? "es" : "en";
+        document.documentElement.lang = currentLang;
+        document.documentElement.dir = currentLang === "ar" ? "rtl" : "ltr";
 
         document.querySelectorAll("[data-i18n]").forEach(function (el) {
           var key = el.getAttribute("data-i18n");
