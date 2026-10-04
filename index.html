@@ -609,20 +609,6 @@
       color: var(--ink-muted);
       line-height: 1.6;
     }
-    body.mode-story .story-section[data-step="01"] .section-label.reveal:not(.is-in),
-    body.mode-story .story-section[data-step="03"] .section-label.reveal:not(.is-in),
-    body.mode-story .story-section[data-step="05"] .section-label.reveal:not(.is-in),
-    body.mode-story .story-section[data-step="07"] .section-label.reveal:not(.is-in),
-    body.mode-story .story-section[data-step="09"] .section-label.reveal:not(.is-in) {
-      transform: translate3d(-22px, 4px, -48px) rotateY(9deg);
-    }
-    body.mode-story .story-section[data-step="02"] .section-label.reveal:not(.is-in),
-    body.mode-story .story-section[data-step="04"] .section-label.reveal:not(.is-in),
-    body.mode-story .story-section[data-step="06"] .section-label.reveal:not(.is-in),
-    body.mode-story .story-section[data-step="08"] .section-label.reveal:not(.is-in) {
-      transform: translate3d(22px, 4px, -48px) rotateY(-9deg);
-    }
-
     .about-prose {
       max-width: var(--max);
       color: var(--ink-muted);
@@ -645,7 +631,7 @@
       padding: 1.45rem 1.5rem 1.4rem 1.55rem;
       box-shadow: var(--shadow);
       position: relative;
-      transition: transform var(--dur-fast) var(--ease-out-quart), box-shadow 0.35s ease, border-color 0.3s ease;
+      transition: box-shadow 0.35s ease, border-color 0.3s ease;
     }
     .card::before {
       content: "";
@@ -660,7 +646,6 @@
     }
     .card::after { content: none; }
     .card:hover {
-      transform: translateY(-2px);
       box-shadow: var(--shadow-hover);
       border-color: rgba(125, 158, 180, 0.28);
     }
@@ -731,10 +716,9 @@
       border: 1px solid var(--border);
       border-radius: var(--radius);
       border-left: 2px solid var(--accent-2);
-      transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
     }
     .edu-item:hover {
-      transform: translateY(-2px);
       border-color: rgba(196, 165, 116, 0.35);
       box-shadow: var(--shadow);
     }
@@ -902,66 +886,86 @@
       border-top: 1px solid transparent;
     }
 
-    body.mode-story .reveal {
-      opacity: 0;
-      transform: translate3d(0, 26px, -72px) rotateX(8deg);
+    /* Scroll-linked depth for the full resume. Z translation only, no axis tilt. */
+    @property --x {
+      syntax: "<length>";
+      inherits: false;
+      initial-value: 0px;
+    }
+
+    .shell {
+      perspective: 1200px;
+      perspective-origin: 50% var(--pov, 38vh);
+    }
+    .landing,
+    .hero-tilt,
+    .story-section,
+    .about-prose,
+    .cards,
+    .edu,
+    .creds,
+    .edu-block {
       transform-style: preserve-3d;
-      transition:
-        opacity var(--dur-reveal) var(--ease-out-expo),
-        transform var(--dur-reveal) var(--ease-out-expo);
-      transition-delay: var(--d, 0ms);
-      will-change: opacity, transform;
     }
-    body.mode-story .reveal.from-up { transform: translate3d(0, 24px, -64px) rotateX(8deg); }
-    body.mode-story .reveal.from-left { transform: translate3d(-26px, 14px, -88px) rotateY(10deg) rotateX(4deg); }
-    body.mode-story .reveal.from-right { transform: translate3d(26px, 14px, -88px) rotateY(-10deg) rotateX(4deg); }
-    body.mode-story .reveal.from-scale { transform: translate3d(0, 20px, -110px) rotateX(11deg) scale(0.97); }
-    body.mode-story .reveal.from-rotate { transform: translate3d(0, 16px, -80px) rotateY(-8deg) rotateX(6deg); }
-    body.mode-story .reveal.is-in {
+    .landing,
+    .story-section {
+      transform: translate3d(0, 0, var(--z, 0px));
+    }
+    .reveal {
+      --x: 0px;
+      --z: 0px;
       opacity: 1;
-      transform: translateZ(12px);
-      will-change: auto;
+      transform: translate3d(var(--x), 0, var(--z));
+      transform-style: preserve-3d;
+      transition: --x 0.72s var(--ease-out-expo);
     }
-    body.mode-story .section-label.reveal.is-in { transform: none; }
-    body.mode-story .card.reveal.is-in,
-    body.mode-story .edu-item.reveal.is-in,
-    body.mode-story .cred-item.reveal.is-in,
-    body.mode-story .award-item.reveal.is-in,
-    body.mode-story .cta.reveal.is-in {
-      transform: translate3d(0, 0, 22px);
-      transition: transform 0.45s var(--ease-out-quart), box-shadow 0.35s ease, border-color 0.3s ease, opacity var(--dur-reveal) var(--ease-out-expo);
+    .reveal.from-left:not(.is-settled) { --x: -36px; }
+    .reveal.from-right:not(.is-settled) { --x: 36px; }
+    .reveal:not(.from-left):not(.from-right):not(.from-up):not(.from-scale):not(.is-settled) {
+      --x: -28px;
     }
-    body.mode-story .stagger > .reveal { --d: calc(var(--i, 0) * 70ms); }
-    body.mode-story .stagger.stagger-tight > .reveal { --d: calc(var(--i, 0) * 36ms); }
-    body.mode-story .section-label.reveal { transform: translate3d(-14px, 0, -36px) rotateY(7deg); }
-    body.mode-story .section-label.reveal.is-in { transform: none; }
-
-    /* Every box uses the same depth motion, not a left/right swing. */
-    body.mode-story .card.reveal,
-    body.mode-story .edu-item.reveal,
-    body.mode-story .cred-item.reveal,
-    body.mode-story .award-item.reveal,
-    body.mode-story .cta.reveal,
-    body.mode-story .section-label.reveal,
-    body.mode-story .story-section[data-step] .section-label.reveal:not(.is-in) {
-      transform: translate3d(0, 28px, -84px) rotateX(9deg);
+    .landing .reveal,
+    .landing .reveal.from-left,
+    .landing .reveal.from-right,
+    .landing .reveal.from-up,
+    .landing .reveal.from-scale {
+      --x: 0px;
+    }
+    html[dir="rtl"] .reveal.from-left:not(.is-settled) { --x: 36px; }
+    html[dir="rtl"] .reveal.from-right:not(.is-settled) { --x: -36px; }
+    html[dir="rtl"] .reveal:not(.from-left):not(.from-right):not(.from-up):not(.from-scale):not(.is-settled) {
+      --x: 28px;
+    }
+    html[dir="rtl"] .landing .reveal,
+    html[dir="rtl"] .landing .reveal.from-left,
+    html[dir="rtl"] .landing .reveal.from-right,
+    html[dir="rtl"] .landing .reveal.from-up,
+    html[dir="rtl"] .landing .reveal.from-scale {
+      --x: 0px;
     }
 
-    body.mode-story .landing .reveal {
-      animation: hero-in var(--dur-reveal) var(--ease-out-expo) both;
-      animation-delay: var(--d, 0ms);
-      opacity: 1;
-      transform: none;
+    .card,
+    .cta {
+      box-shadow: var(--shadow), 0 18px 36px rgba(0, 0, 0, var(--shade, 0));
     }
-    @keyframes hero-in {
-      from { opacity: 0; transform: translate3d(0, 22px, -70px) rotateX(9deg); }
-      to { opacity: 1; transform: translateZ(10px); }
+    .edu-item,
+    .cred-item,
+    .award-item {
+      box-shadow: 0 16px 30px rgba(0, 0, 0, var(--shade, 0));
     }
-    body.mode-story .landing .reveal.from-left { animation-name: hero-in-left; }
-    body.mode-story .landing .reveal.from-scale { animation-name: hero-in; }
-    @keyframes hero-in-left {
-      from { opacity: 0; transform: translate3d(-20px, 10px, -60px) rotateY(8deg); }
-      to { opacity: 1; transform: translateZ(8px); }
+    .card:hover,
+    .edu-item:hover,
+    .cred-item:hover,
+    .award-item:hover,
+    .cta:hover {
+      transform: translate3d(var(--x, 0px), -2px, calc(var(--z, 0px) + 8px));
+    }
+    .card:hover,
+    .cta:hover {
+      box-shadow: var(--shadow-hover), 0 22px 42px rgba(0, 0, 0, calc(var(--shade, 0) + 0.06));
+    }
+    .edu-item:hover {
+      box-shadow: var(--shadow), 0 18px 34px rgba(0, 0, 0, calc(var(--shade, 0) + 0.06));
     }
 
     body.mode-full .landing {
@@ -975,15 +979,6 @@
       padding: 2.35rem 0 0;
       min-height: 0;
     }
-    body.mode-full .reveal {
-      opacity: 1 !important;
-      transform: none !important;
-      filter: none !important;
-      transition: none !important;
-      animation: none !important;
-      will-change: auto;
-    }
-    body.mode-full .hero-tilt { transform: none; }
     body.mode-full .depth-a,
     body.mode-full .depth-b,
     body.mode-full .landing-glow {
@@ -993,37 +988,6 @@
     @keyframes float-soft {
       0%, 100% { transform: translateY(0); }
       50% { transform: translateY(-6px); }
-    }
-    body.mode-full .card:hover,
-    body.mode-full .edu-item:hover,
-    body.mode-full .cred-item:hover,
-    body.mode-full .award-item:hover,
-    body.mode-full .cta:hover {
-      transform: translateY(-1px) !important;
-    }
-
-    @media (pointer: fine) and (min-width: 900px) {
-      body.mode-story .hero-tilt {
-        transform: rotateX(calc(var(--py) * -4.5deg)) rotateY(calc(var(--px) * 5.5deg));
-      }
-      body.mode-story .card.reveal.is-in,
-      body.mode-story .edu-item.reveal.is-in,
-      body.mode-story .cred-item.reveal.is-in,
-      body.mode-story .award-item.reveal.is-in,
-      body.mode-story .cta.reveal.is-in {
-        transform:
-          translate3d(0, 0, 22px)
-          rotateX(calc(var(--py) * -2.2deg));
-      }
-      body.mode-story .card.reveal.is-in:hover,
-      body.mode-story .edu-item.reveal.is-in:hover,
-      body.mode-story .cred-item.reveal.is-in:hover,
-      body.mode-story .award-item.reveal.is-in:hover,
-      body.mode-story .cta.reveal.is-in:hover {
-        transform:
-          translate3d(0, -4px, 36px)
-          rotateX(calc(var(--py) * -2.2deg));
-      }
     }
 
     @media (max-width: 720px) {
@@ -1038,27 +1002,13 @@
         min-height: 0;
         padding: 2.75rem 0 0.5rem;
       }
-      body.mode-story .reveal.from-left:not(.is-in),
-      body.mode-story .reveal.from-right:not(.is-in),
-      body.mode-story .reveal.from-rotate:not(.is-in),
-      body.mode-story .reveal.from-scale:not(.is-in),
-      body.mode-story .reveal.from-up:not(.is-in),
-      body.mode-story .section-label.reveal:not(.is-in),
-      body.mode-story .story-section[data-step] .section-label.reveal:not(.is-in) {
-        transform: translate3d(0, 12px, -22px) rotateX(3deg) !important;
-      }
-      body.mode-story .card.reveal.is-in,
-      body.mode-story .edu-item.reveal.is-in,
-      body.mode-story .cred-item.reveal.is-in,
-      body.mode-story .award-item.reveal.is-in,
-      body.mode-story .cta.reveal.is-in,
-      body.mode-story .reveal.is-in {
-        transform: none;
-      }
-      body.mode-story .shell::before,
-      body.mode-story .story-section::before { transform: none; }
+      .reveal.from-left:not(.is-settled) { --x: -18px; }
+      .reveal.from-right:not(.is-settled) { --x: 18px; }
+      .reveal:not(.from-left):not(.from-right):not(.from-up):not(.from-scale):not(.is-settled) { --x: -14px; }
+      html[dir="rtl"] .reveal.from-left:not(.is-settled) { --x: 18px; }
+      html[dir="rtl"] .reveal.from-right:not(.is-settled) { --x: -18px; }
+      html[dir="rtl"] .reveal:not(.from-left):not(.from-right):not(.from-up):not(.from-scale):not(.is-settled) { --x: 14px; }
       .depth-a, .depth-b, .landing-glow { display: none; }
-      .hero-tilt { transform: none !important; }
       .shell { perspective: 1100px; }
       .card { padding: 1.2rem 1.1rem 1.15rem 1.2rem; }
       .cta { padding: 1.7rem 1.15rem; }
@@ -1083,16 +1033,23 @@
       body.mode-full .cta:hover { transform: none !important; }
       body.mode-story .shell::before,
       body.mode-story .story-section::before { transform: none !important; }
-      .shell { perspective: none; }
-      body.mode-story .reveal,
-      body.mode-story .landing .reveal {
-        opacity: 1 !important;
+      .shell { perspective: none !important; perspective-origin: 50% 50%; }
+      .landing,
+      .story-section,
+      .reveal,
+      .card,
+      .edu-item,
+      .cred-item,
+      .award-item,
+      .cta,
+      .hero-tilt {
+        --x: 0px !important;
+        --z: 0px !important;
         transform: none !important;
-        filter: none !important;
         transition: none !important;
         animation: none !important;
-        will-change: auto;
       }
+      .reveal { opacity: 1 !important; filter: none !important; }
     }
 
     /* Arabic only: mirror reading order and start-side rules. LTR languages unchanged. */
@@ -2415,10 +2372,103 @@
       }
       queueRoadmap();
 
+
+      /* Scroll depth: sections and cards move in Z with scroll. Lateral settle is translateX only. */
+      var shell = document.querySelector(".shell");
+      var depthSections = Array.prototype.slice.call(document.querySelectorAll(".landing, .story-section"));
+      var depthItems = Array.prototype.slice.call(document.querySelectorAll(".shell .reveal"));
+      var depthRaf = 0;
+      var settleIO = null;
+
+      function layerSign(el, index) {
+        if (el.classList.contains("from-right") || el.classList.contains("from-scale")) return 1;
+        if (el.classList.contains("from-left") || el.classList.contains("from-up")) return -1;
+        return index % 2 === 0 ? 1 : -1;
+      }
+
+      function zFor(rect, sign, amp) {
+        var vh = window.innerHeight || 1;
+        var focus = vh * 0.44;
+        var center = rect.top + rect.height * 0.5;
+        if (rect.height > vh * 0.9) center = rect.top + Math.min(220, rect.height * 0.22);
+        var dist = (center - focus) / vh;
+        var travel = 1 - Math.min(Math.abs(dist) / 0.92, 1);
+        var far = -68 * amp;
+        var near = (sign > 0 ? 46 : 4) * amp;
+        return far + (near - far) * travel;
+      }
+
+      function clearDepth() {
+        if (shell) shell.style.removeProperty("--pov");
+        depthSections.forEach(function (el) { el.style.removeProperty("--z"); });
+        depthItems.forEach(function (el) {
+          el.style.removeProperty("--z");
+          el.style.removeProperty("--shade");
+          el.classList.add("is-settled");
+        });
+        if (settleIO) { settleIO.disconnect(); settleIO = null; }
+      }
+
+      function updateDepth() {
+        depthRaf = 0;
+        if (reduceMotion || !shell) return;
+        var amp = window.innerWidth < 720 ? 0.58 : 1;
+        var shellRect = shell.getBoundingClientRect();
+        var pov = (window.innerHeight * 0.44) - shellRect.top;
+        shell.style.setProperty("--pov", pov.toFixed(1) + "px");
+        depthSections.forEach(function (el, i) {
+          var sign = i % 2 === 0 ? 1 : -1;
+          var z = zFor(el.getBoundingClientRect(), sign, amp * 0.5);
+          el.style.setProperty("--z", z.toFixed(1) + "px");
+        });
+        depthItems.forEach(function (el, i) {
+          var z = zFor(el.getBoundingClientRect(), layerSign(el, i), amp);
+          el.style.setProperty("--z", z.toFixed(1) + "px");
+          if (el.classList.contains("card") || el.classList.contains("edu-item") || el.classList.contains("cred-item") || el.classList.contains("award-item") || el.classList.contains("cta")) {
+            var shade = Math.max(0, Math.min(0.32, (z + 68 * amp) / (120 * amp) * 0.26));
+            el.style.setProperty("--shade", shade.toFixed(3));
+          }
+        });
+      }
+
+      function queueDepth() {
+        if (reduceMotion) return;
+        if (!depthRaf) depthRaf = requestAnimationFrame(updateDepth);
+      }
+
+      function bindSettle() {
+        if (settleIO) { settleIO.disconnect(); settleIO = null; }
+        if (reduceMotion || !("IntersectionObserver" in window)) {
+          depthItems.forEach(function (el) { el.classList.add("is-settled"); });
+          return;
+        }
+        settleIO = new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) {
+            if (!entry.isIntersecting) return;
+            entry.target.classList.add("is-settled");
+            settleIO.unobserve(entry.target);
+          });
+        }, { root: null, rootMargin: "0px 0px -8% 0px", threshold: [0.12, 0.28] });
+        depthItems.forEach(function (el) {
+          if (el.closest(".landing")) {
+            el.classList.add("is-settled");
+            return;
+          }
+          settleIO.observe(el);
+        });
+      }
+
+      bindSettle();
+      window.addEventListener("scroll", queueDepth, { passive: true });
+      window.addEventListener("resize", queueDepth, { passive: true });
+      if (!reduceMotion) updateDepth();
+
       function onReduceChange(e) {
         reduceMotion = e.matches;
         refreshReveals();
         tx = 0; ty = 0; clearTilt(); queueParallax();
+        if (reduceMotion) clearDepth();
+        else { bindSettle(); updateDepth(); }
       }
       if (mqReduce.addEventListener) mqReduce.addEventListener("change", onReduceChange);
       else if (mqReduce.addListener) mqReduce.addListener(onReduceChange);
